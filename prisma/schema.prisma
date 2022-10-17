@@ -1,0 +1,112 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+//user system
+
+model Status {
+    id        Int         @id @default(autoincrement())
+    status    String
+    Account   Account[]
+    Community Community[]
+}
+
+model Role {
+    id      Int       @id @default(autoincrement())
+    role    String
+    Account Account[]
+}
+
+model User {
+    id        Int      @id @default(autoincrement())
+    names     String
+    email     String   @unique
+    password  String
+    location  String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Community {
+    id          Int       @id @default(autoincrement())
+    name        String
+    status      Status    @relation(references: [id], fields: [statusId])
+    statusId    Int
+    description String
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+    Account     Account[]
+}
+
+model Account {
+    id          Int        @id @default(autoincrement())
+    status      Status     @relation(references: [id], fields: [statusId])
+    statusId    Int
+    community   Community  @relation(references: [id], fields: [communityId])
+    communityId Int
+    role        Role       @relation(references: [id], fields: [roleId])
+    roleId      Int
+    profile_pic String
+    cover_pic   String
+    createdAt   DateTime   @default(now())
+    updatedAt   DateTime   @updatedAt
+    Reaction    Reaction[]
+    Comment     Comment[]
+    Memory      Memory[]
+}
+
+//posting system
+
+model Post_Types {
+    id   Int    @id @default(autoincrement())
+    type String
+    Post Post[]
+}
+
+model Reaction {
+    id         Int      @id @default(autoincrement())
+    reaction   String
+    affectorId Int
+    account    Account  @relation(references: [id], fields: [accountId])
+    accountId  Int
+    Comment    Comment? @relation(references: [id], fields: [commentId])
+    commentId  Int?
+    Post       Post?    @relation(references: [id], fields: [postId])
+    postId     Int?
+}
+
+model Comment {
+    id         Int        @id @default(autoincrement())
+    comment    String
+    reactions  Reaction[]
+    affectorId Int
+    account    Account    @relation(references: [id], fields: [accountId])
+    accountId  Int
+    createdAt  DateTime   @default(now())
+}
+
+model Post {
+    id       Int        @id @default(autoincrement())
+    type     Post_Types @relation(references: [id], fields: [typeId])
+    typeId   Int
+    content  String
+    Reaction Reaction[]
+}
+
+//memories system
+
+model Memory_Types {
+    id     Int      @id @default(autoincrement())
+    type   String
+    memory Memory[]
+}
+
+model Memory {
+    id          Int          @id @default(autoincrement())
+    Memory_Type Memory_Types @relation(fields: [memory_Type], references: [id])
+    memory_Type Int
+    content     String
+    account     Account      @relation(fields: [accountId], references: [id])
+    accountId   Int
+}
