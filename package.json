@@ -5,11 +5,8 @@
   "description": "Projectia backend codebase",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --detectOpenHandles --forceExit",
     "dev": "nodemon server.js"
-  },
-  "jest": {
-    "verbose": true
   },
   "repository": {
     "type": "git",
@@ -31,6 +28,7 @@
     "supertest": "^6.3.0"
   },
   "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.18.6",
     "nodemon": "^2.0.20",
     "prisma": "^4.4.0"
   }
