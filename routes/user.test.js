@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import app from "../server.js";
+import app from "../index.js";
 
 describe("POST /users/signup", () => {
   describe("when the request body is valid", () => {
@@ -12,8 +12,4 @@ describe("POST /users/signup", () => {
       expect(response.status).toBe(201);
     });
   });
-});
-
-afterAll(async () => {
-  await new Promise((resolve) => setTimeout(() => resolve(), 500)); // avoid jest open handle error
 });
