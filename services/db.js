@@ -1,5 +1,14 @@
-import { PrismaClient } from "@prisma/client";
+import Ps from "pg";
 
-const prisma = new PrismaClient();
+const client = new Ps.Client({
+  user: "saad",
+  host: "localhost",
+  database: "projectia",
+  password: "saju@123",
+  port: 5432,
+});
 
-export default prisma;
+export default client.connect(function (err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
