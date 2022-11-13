@@ -1,7 +1,5 @@
 import express from "express";
 import dotenv from "dotenv";
-import passport from "passport";
-import session from "express-session";
 import logger from "morgan";
 
 //database
@@ -20,15 +18,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger("dev"));
-app.use(
-  session({
-    secret: `${process.env.S_SECRET}`,
-    resave: true,
-    saveUninitialized: true,
-  })
-);
-app.use(passport.initialize());
-app.use(passport.session());
 
 //endpoints
 app.use("/api/v1/users", userRoutes);
