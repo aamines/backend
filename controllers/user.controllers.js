@@ -32,7 +32,7 @@ export const signup = (req, res) => {
                       data: {
                         names: data.names,
                         email: data.email,
-                        location: data.country,
+                        country: data.country,
                         password: hash,
                       },
                     })
@@ -40,8 +40,9 @@ export const signup = (req, res) => {
                       await prisma.account
                         .create({
                           data: {
-                            status: "active",
+                            userId: user.id,
                             statusId: 1,
+                            roleId: 2,
                           },
                         })
                         .then((_) => {
@@ -50,7 +51,7 @@ export const signup = (req, res) => {
                               id: user.id,
                               email: user.email,
                               names: user.names,
-                              location: user.location,
+                              country: user.country,
                             },
                             process.env.JWT_SECRET,
                             {
