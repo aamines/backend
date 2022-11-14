@@ -24,10 +24,10 @@ model Role {
 
 model User {
     id        Int      @id @default(autoincrement())
-    names     String
+    names     String    
     email     String   @unique
     password  String
-    location  String
+    country  String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }

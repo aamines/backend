@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import logger from "morgan";
 
 //database
-import "./services/db.js";
+import "./services/db.service.js";
 
 //importing routes
 import userRoutes from "./routes/user.routes.js";
@@ -15,9 +15,9 @@ dotenv.config();
 const app = express();
 
 //middlewares
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(logger("dev"));
 
 //endpoints
 app.use("/api/v1/users", userRoutes);

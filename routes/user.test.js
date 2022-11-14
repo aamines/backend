@@ -6,8 +6,10 @@ describe("POST /users/signup", () => {
     test("should return 201", async () => {
       const response = await supertest(app).post("/api/v1/users/signup").send({
         name: "test",
-        email: "",
+        email: "test@gmail.com",
         password: "test",
+        country: "test",
+        usedGoogle: false,
       });
       expect(response.status).toBe(201);
     });
