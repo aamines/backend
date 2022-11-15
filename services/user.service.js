@@ -16,7 +16,7 @@ export const checkSignup = (data) => {
         resolve(result);
       })
       .catch((error) => {
-        reject(new Error(error.message));
+        reject(error.message);
       });
   });
 };
@@ -36,7 +36,7 @@ export const checkUser = (email) => {
       if (!found) {
         resolve(false);
       } else {
-        reject(new Error("Email already used"));
+        reject("Email already used");
       }
     });
   });
@@ -60,7 +60,7 @@ export const createUser = (data) => {
             resolve(user);
           })
           .catch((error) => {
-            reject(new Error(error.message));
+            reject(error.message);
           });
       });
     });
@@ -69,14 +69,13 @@ export const createUser = (data) => {
 
 //create account
 export const createAccount = (user) => {
-  console.log(user);
   return new Promise(async (resolve, reject) => {
     await prisma.account
       .create({
         data: {
           userId: user.id,
-          statusId: 1,
           roleId: 2,
+          statusId: 1,
         },
       })
       .then((account) => {
@@ -95,7 +94,7 @@ export const createAccount = (user) => {
         resolve({ token, account });
       })
       .catch((error) => {
-        reject(new Error(error.message));
+        reject(error.message);
       });
   });
 };

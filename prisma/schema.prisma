@@ -10,16 +10,16 @@ datasource db {
 //user system
 
 model Status {
-    id        Int         @id @default(autoincrement())
-    status    String
-    Account   Account[]
-    Community Community[]
+    id          Int         @id @default(autoincrement())
+    status      String
+    accounts    Account[]
+    communities Community[]
 }
 
 model Role {
-    id      Int       @id @default(autoincrement())
-    role    String
-    Account Account[]
+    id       Int       @id @default(autoincrement())
+    role     String
+    accounts Account[]
 }
 
 model User {
@@ -27,48 +27,57 @@ model User {
     names     String
     email     String    @unique
     password  String
-    country   String    @default("Rwanda")
+    country   String
     createdAt DateTime  @default(now())
     updatedAt DateTime  @updatedAt
-    Account   Account[]
+    accounts  Account[]
 }
 
 model Community {
-    id          Int       @id @default(autoincrement())
+    id          Int                  @id @default(autoincrement())
     name        String
-    status      Status    @relation(references: [id], fields: [statusId])
+    status      Status               @relation(references: [id], fields: [statusId])
     statusId    Int
     description String
-    createdAt   DateTime  @default(now())
-    updatedAt   DateTime  @updatedAt
-    Account     Account[]
+    createdAt   DateTime             @default(now())
+    updatedAt   DateTime             @updatedAt
+    accounts    AccountOnCommunity[]
 }
 
 model Account {
-    id          Int        @id @default(autoincrement())
-    user        User       @relation(references: [id], fields: [userId])
+    id          Int                  @id @default(autoincrement())
+    user        User                 @relation(references: [id], fields: [userId])
     userId      Int
-    status      Status     @relation(references: [id], fields: [statusId])
+    status      Status               @relation(references: [id], fields: [statusId])
     statusId    Int
-    community   Community  @relation(references: [id], fields: [communityId])
-    communityId Int
-    role        Role       @relation(references: [id], fields: [roleId])
+    role        Role                 @relation(references: [id], fields: [roleId])
     roleId      Int
-    profile_pic String
-    cover_pic   String
-    createdAt   DateTime   @default(now())
-    updatedAt   DateTime   @updatedAt
-    Reaction    Reaction[]
-    Comment     Comment[]
-    Memory      Memory[]
+    profile_pic String               @default("")
+    cover_pic   String               @default("")
+    createdAt   DateTime             @default(now())
+    updatedAt   DateTime             @updatedAt
+    reactions   Reaction[]
+    comments    Comment[]
+    memories    Memory[]
+    communities AccountOnCommunity[]
+}
+
+model AccountOnCommunity {
+    community   Community @relation(references: [id], fields: [communityId])
+    communityId Int
+    account     Account   @relation(references: [id], fields: [accountId])
+    accountId   Int
+    assignedAt  DateTime  @default(now())
+
+    @@id([communityId, accountId])
 }
 
 //posting system
 
 model Post_Types {
-    id   Int    @id @default(autoincrement())
-    type String
-    Post Post[]
+    id    Int    @id @default(autoincrement())
+    type  String
+    posts Post[]
 }
 
 model Reaction {
@@ -94,19 +103,19 @@ model Comment {
 }
 
 model Post {
-    id       Int        @id @default(autoincrement())
-    type     Post_Types @relation(references: [id], fields: [typeId])
-    typeId   Int
-    content  String
-    Reaction Reaction[]
+    id        Int        @id @default(autoincrement())
+    type      Post_Types @relation(references: [id], fields: [typeId])
+    typeId    Int
+    content   String
+    reactions Reaction[]
 }
 
 //memories system
 
 model Memory_Types {
-    id     Int      @id @default(autoincrement())
-    type   String
-    memory Memory[]
+    id       Int      @id @default(autoincrement())
+    type     String
+    memories Memory[]
 }
 
 model Memory {
