@@ -20,7 +20,7 @@ CREATE TABLE "User" (
     "names" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "location" TEXT NOT NULL,
+    "country" TEXT NOT NULL DEFAULT 'Rwanda',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -42,6 +42,7 @@ CREATE TABLE "Community" (
 -- CreateTable
 CREATE TABLE "Account" (
     "id" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
     "statusId" INTEGER NOT NULL,
     "communityId" INTEGER NOT NULL,
     "roleId" INTEGER NOT NULL,
@@ -116,6 +117,9 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- AddForeignKey
 ALTER TABLE "Community" ADD CONSTRAINT "Community_statusId_fkey" FOREIGN KEY ("statusId") REFERENCES "Status"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_statusId_fkey" FOREIGN KEY ("statusId") REFERENCES "Status"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
