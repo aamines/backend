@@ -34,9 +34,9 @@ export const checkUser = (email) => {
   return new Promise(async (resolve, reject) => {
     await prisma.user.findFirst({ where: { email: email } }).then((found) => {
       if (!found) {
-        resolve(false);
+        resolve({ found: false, user: {} });
       } else {
-        reject("Email already used");
+        resolve({ found: true, user: found });
       }
     });
   });
@@ -79,22 +79,29 @@ export const createAccount = (user) => {
         },
       })
       .then((account) => {
-        let token = jwt.sign(
-          {
-            id: user.id,
-            email: user.email,
-            names: user.names,
-            country: user.country,
-          },
-          process.env.JWT_SECRET,
-          {
-            expiresIn: 86400,
-          }
-        );
-        resolve({ token, account });
+        resolve(account);
       })
       .catch((error) => {
         reject(error.message);
       });
+  });
+};
+
+//compare passwords
+export const comparePasswords = (password, hash) => {
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(password, hash, (err, result) => {
+      resolve(result);
+    });
+  });
+};
+
+//signin a user
+export const signin = (payload) => {
+  return new Promise((resolve, reject) => {
+    let token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: 86400,
+    });
+    resolve(token);
   });
 };

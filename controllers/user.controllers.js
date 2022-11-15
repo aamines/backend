@@ -2,11 +2,13 @@
 import {
   checkSignup,
   checkUser,
+  comparePasswords,
   createAccount,
   createUser,
+  signin,
 } from "../services/user.service.js";
 
-export const signup = (req, res) => {
+export const signup = async (req, res) => {
   const data = {
     names: req.body.names,
     email: req.body.email,
@@ -16,18 +18,20 @@ export const signup = (req, res) => {
   };
 
   if (!data.usedGoogle) {
-    checkSignup(data)
-      .then((_) => {
-        checkUser(data.email)
-          .then((_) => {
-            createUser(data)
-              .then((user) => {
-                createAccount(user)
-                  .then(({ token, _ }) => {
-                    return res.status(200).json({
-                      status: "success",
-                      message: "Account created",
-                      token: token,
+    await checkSignup(data)
+      .then(async (_) => {
+        await checkUser(data.email).then(async ({ found, user }) => {
+          if (!found) {
+            await createUser(data)
+              .then(async (user) => {
+                await createAccount(user)
+                  .then(async (account) => {
+                    await signin(account).then((token) => {
+                      return res.status(200).json({
+                        status: "success",
+                        message: "Account created",
+                        token: token,
+                      });
                     });
                   })
                   .catch((error) => {
@@ -43,13 +47,13 @@ export const signup = (req, res) => {
                   message: error,
                 });
               });
-          })
-          .catch((error) => {
+          } else {
             return res.status(400).json({
               status: "error",
-              message: error,
+              message: "Email already used",
             });
-          });
+          }
+        });
       })
       .catch((error) => {
         return res.status(400).json({
@@ -57,5 +61,43 @@ export const signup = (req, res) => {
           message: error,
         });
       });
+  }
+};
+
+export const login = async (req, res) => {
+  const data = {
+    email: req.body.email,
+    password: req.body.password,
+    usedGoogle: req.body.usedGoogle,
+  };
+
+  if (!data.usedGoogle) {
+    checkUser(data.email).then(async ({ found, user }) => {
+      if (found) {
+        await comparePasswords(data.password, user.password).then(
+          async (result) => {
+            if (result) {
+              await signin(user).then((token) => {
+                return res.status(200).json({
+                  status: "success",
+                  message: "user logged in",
+                  token: token,
+                });
+              });
+            } else {
+              return res.status(400).json({
+                status: "error",
+                message: "Incorrect password",
+              });
+            }
+          }
+        );
+      } else {
+        return res.status(400).json({
+          status: "error",
+          message: "Email not found",
+        });
+      }
+    });
   }
 };
