@@ -1,2 +1,2 @@
-# projectia_back
-Projectia backend codebase
+# Auth service
+Projectia auth service codebase
