@@ -32,7 +32,8 @@
     "morgan": "^1.10.0",
     "pg": "^8.8.0",
     "pug": "^3.0.2",
-    "supertest": "^6.3.0"
+    "supertest": "^6.3.0",
+    "swaggiffy": "^1.0.5"
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.18.6",

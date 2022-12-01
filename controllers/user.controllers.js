@@ -20,7 +20,7 @@ export const signup = async (req, res) => {
   if (!data.usedGoogle) {
     await checkSignup(data)
       .then(async (_) => {
-        await checkUser(data.email).then(async ({ found, user }) => {
+        await checkUser(data.email).then(async ({ found, _ }) => {
           if (!found) {
             await createUser(data)
               .then(async (user) => {
@@ -102,4 +102,8 @@ export const login = async (req, res) => {
   }
 };
 
-export const deleteAccount = async (req, res) => {};
+export const deleteAccount = async (req, res) => {
+  const data = {
+    id: req.body.id,
+  };
+};
