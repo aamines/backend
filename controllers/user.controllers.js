@@ -101,3 +101,5 @@ export const login = async (req, res) => {
     });
   }
 };
+
+export const deleteAccount = async (req, res) => {};
