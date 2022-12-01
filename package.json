@@ -5,8 +5,8 @@
   "description": "Projectia backend codebase",
   "main": "index.js",
   "scripts": {
-    "test": "jest --detectOpenHandles --forceExit",
-    "dev": "nodemon index.js"
+    "test": "jest --coverage",
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
