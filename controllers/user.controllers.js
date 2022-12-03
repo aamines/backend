@@ -3,10 +3,11 @@ import {
   checkSignup,
   checkUser,
   comparePasswords,
-  createAccount,
   createUser,
   signin,
 } from "../services/user.service.js";
+
+import { createAccount, deleteAccounts } from "../services/account.service.js";
 
 export const signup = async (req, res) => {
   const data = {
@@ -102,8 +103,32 @@ export const login = async (req, res) => {
   }
 };
 
-export const deleteAccount = async (req, res) => {
+export const deleteUser = async (req, res) => {
   const data = {
-    id: req.body.id,
+    user_id: req.body.user_id,
   };
+
+  try {
+    await deleteUser(data.user_id)
+      .then(async (result) => {
+        await deleteAccounts(data.user_id)
+          .then((result) => {
+            return res.status(200).json({
+              status: "success",
+              message: "User deleted",
+            });
+          })
+          .catch((error) => {
+            throw new Error(error);
+          });
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
+  } catch (error) {
+    return res.status(400).json({
+      status: "error",
+      message: error,
+    });
+  }
 };

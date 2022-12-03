@@ -30,7 +30,7 @@ model User {
     password  String
     country   String
     status    Status    @relation(fields: [statusId], references: [id])
-    statusId  Int
+    statusId  Int       @default(1)
     createdAt DateTime  @default(now())
     updatedAt DateTime  @updatedAt
     accounts  Account[]

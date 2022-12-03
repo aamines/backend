@@ -54,6 +54,7 @@ export const createUser = (data) => {
               email: data.email,
               country: data.country,
               password: hash,
+              statusId: 1,
             },
           })
           .then((user) => {
@@ -64,26 +65,6 @@ export const createUser = (data) => {
           });
       });
     });
-  });
-};
-
-//create account
-export const createAccount = (user) => {
-  return new Promise(async (resolve, reject) => {
-    await prisma.account
-      .create({
-        data: {
-          userId: user.id,
-          roleId: 2,
-          statusId: 1,
-        },
-      })
-      .then((account) => {
-        resolve(account);
-      })
-      .catch((error) => {
-        reject(error.message);
-      });
   });
 };
 
@@ -103,5 +84,23 @@ export const signin = (payload) => {
       expiresIn: 86400,
     });
     resolve(token);
+  });
+};
+
+//delete a user
+export const deleteUser = (id) => {
+  return new Promise((resolve, reject) => {
+    prisma.user
+      .delete({
+        where: {
+          id: id,
+        },
+      })
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((error) => {
+        reject(error.message);
+      });
   });
 };

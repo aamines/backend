@@ -4,6 +4,7 @@ import logger from "morgan";
 
 //importing routes
 import userRoutes from "./routes/user.routes.js";
+import accountRoutes from "./routes/account.routes.js";
 
 //setting up server
 const app = express();
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 //endpoints
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/accounts", accountRoutes);
 
 //default page
 app.get("/", (req, res) => {
