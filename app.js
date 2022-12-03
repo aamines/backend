@@ -1,6 +1,7 @@
-import express from "express";
-import dotenv from "dotenv";
+import cors from "cors";
 import logger from "morgan";
+import dotenv from "dotenv";
+import express from "express";
 
 //importing routes
 import userRoutes from "./routes/user.routes.js";
@@ -11,6 +12,7 @@ const app = express();
 
 //configs
 dotenv.config();
+app.use(cors());
 app.set("view engine", "pug");
 app.set("views", "./views");
 
