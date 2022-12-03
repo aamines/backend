@@ -88,7 +88,7 @@ export const signin = (payload) => {
 };
 
 //delete a user
-export const deleteUser = (id) => {
+export const removeUser = (id) => {
   return new Promise((resolve, reject) => {
     prisma.user
       .delete({

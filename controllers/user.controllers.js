@@ -3,6 +3,7 @@ import {
   checkSignup,
   checkUser,
   comparePasswords,
+  removeUser,
   createUser,
   signin,
 } from "../services/user.service.js";
@@ -31,6 +32,7 @@ export const signup = async (req, res) => {
                       return res.status(200).json({
                         status: "success",
                         message: "Account created",
+                        userId: user.id,
                         token: token,
                       });
                     });
@@ -109,9 +111,9 @@ export const deleteUser = async (req, res) => {
   };
 
   try {
-    await deleteUser(data.user_id)
+    await deleteAccounts(data.user_id)
       .then(async (result) => {
-        await deleteAccounts(data.user_id)
+        await removeUser(data.user_id)
           .then((result) => {
             return res.status(200).json({
               status: "success",

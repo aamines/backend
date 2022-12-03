@@ -1,6 +1,14 @@
 import supertest from "supertest";
 import app from "../app.js";
 
+let userId;
+
+afterAll(() => {
+  return supertest(app)
+    .delete("/api/v1/users/delete")
+    .send({ user_id: userId });
+});
+
 describe("POST /users/signup", () => {
   describe("when the request body is valid", () => {
     describe("When didn't use google", () => {
@@ -14,6 +22,8 @@ describe("POST /users/signup", () => {
             password: "test@12345",
             usedGoogle: false,
           });
+
+        userId = response.body.userId;
         expect(response.status).toBe(200);
         expect(response.body.token).toBeDefined();
       });

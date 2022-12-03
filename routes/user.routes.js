@@ -8,6 +8,6 @@ const router = express.Router();
 //implementing user routes
 router.post("/signup", signup);
 router.post("/login", login);
-router.post("/delete", deleteUser);
+router.delete("/delete", deleteUser);
 
 export default router;
