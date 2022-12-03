@@ -74,33 +74,40 @@ export const login = async (req, res) => {
     usedGoogle: req.body.usedGoogle,
   };
 
-  if (!data.usedGoogle) {
-    checkUser(data.email).then(async ({ found, user }) => {
-      if (found) {
-        await comparePasswords(data.password, user.password).then(
-          async (result) => {
-            if (result) {
-              await signin(user).then((token) => {
-                return res.status(200).json({
-                  status: "success",
-                  message: "user logged in",
-                  token: token,
+  if (data.email && data.password) {
+    if (!data.usedGoogle) {
+      checkUser(data.email).then(async ({ found, user }) => {
+        if (found) {
+          await comparePasswords(data.password, user.password).then(
+            async (result) => {
+              if (result) {
+                await signin(user).then((token) => {
+                  return res.status(200).json({
+                    status: "success",
+                    message: "user logged in",
+                    token: token,
+                  });
                 });
-              });
-            } else {
-              return res.status(400).json({
-                status: "error",
-                message: "Incorrect password",
-              });
+              } else {
+                return res.status(400).json({
+                  status: "error",
+                  message: "Incorrect password",
+                });
+              }
             }
-          }
-        );
-      } else {
-        return res.status(400).json({
-          status: "error",
-          message: "Email not found",
-        });
-      }
+          );
+        } else {
+          return res.status(400).json({
+            status: "error",
+            message: "Email not found",
+          });
+        }
+      });
+    }
+  } else {
+    return res.status(400).json({
+      status: "error",
+      message: "Email and password are required",
     });
   }
 };
