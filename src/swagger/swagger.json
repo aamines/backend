@@ -1,0 +1,562 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Domentation of Projectia APIs.",
+        "version": "1.0.0",
+        "title": "Projectia APIs",
+        "termsOfService": "http://projectia.co/terms/",
+        "contact": {
+            "email": "projectia@gmail.com",
+            "name": "Projectia"
+        },
+        "licence": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "tags": [{
+            "name": "Auth",
+            "description": "auth operations"
+        },
+        {
+            "name": "User",
+            "description": "Operations about user"
+        },
+        {
+            "name": "Comment",
+            "description": "Operations about comment"
+        },
+        {
+            "name": "Course",
+            "description": "Operations about course"
+        }
+    ],
+    "paths": {
+        "/api/v1/auth/register": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "user registration",
+                "description": "User registration",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "properties": {
+                        "fullName": {
+                            "type": "string",
+                            "example": "Byose David"
+                        },
+                        "email": {
+                            "type": "string",
+                            "example": "davidshumbusho10@gmail.com",
+                            "required": true
+                        },
+                        "password": {
+                            "type": "string"
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "account created, check your email"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/verify-email": {
+            "put": {
+                "tags": ["Auth"],
+                "summary": "verify email",
+                "description": "Verify email",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "properties": {
+                        "email": {
+                            "type": "string",
+                            "example": "davidshumbusho10@gmail.com",
+                            "required": true
+                        },
+                        "code": {
+                            "type": "string"
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Email verified, you can now login"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/login": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "user login",
+                "description": "User login",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "properties": {
+                        "email": {
+                            "type": "string",
+                            "example": "davidshumbusho10@gmail.com",
+                            "required": true
+                        },
+                        "password": {
+                            "type": "string"
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Logged in"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/forgot-password": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "forgot password",
+                "description": "forgot password",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "properties": {
+                        "email": {
+                            "type": "string",
+                            "example": "davidshumbusho10@gmail.com",
+                            "required": true
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "check your email"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/reset-password": {
+            "put": {
+                "tags": ["Auth"],
+                "summary": "reset password",
+                "description": "reset password",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "properties": {
+                        "email": {
+                            "type": "string",
+                            "example": "davidshumbusho10@gmail.com",
+                            "required": true
+                        },
+                        "code": {
+                            "type": "string"
+                        },
+                        "password": {
+                            "type": "string"
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "password reset"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/change-password": {
+            "put": {
+                "tags": ["Auth"],
+                "summary": "change password",
+                "description": "change password",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "properties": {
+                        "email": {
+                            "type": "string",
+                            "example": "davidshumbusho10@gmail.com",
+                            "required": true
+                        },
+                        "oldPassword": {
+                            "type": "string",
+                            "example": "string"
+                        },
+                        "newPassword": {
+                            "type": "string"
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Password changed."
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/me": {
+            "get": {
+                "tags": ["Auth"],
+                "summary": "get user details",
+                "description": "get user details",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "Current user details"
+                    }
+                }
+            }
+        },
+        "/api/v1/user/update-user": {
+            "put": {
+                "tags": ["User"],
+                "summary": "update user details",
+                "description": "Update user details",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "properties": {
+                        "email": {
+                            "type": "string",
+                            "example": "davidshumbusho10@gmail.com",
+                            "required": false
+                        },
+                        "fullName": {
+                            "type": "string",
+                            "example": "Byose Dawidi"
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "user updated"
+                    }
+                }
+            }
+        },
+        "/api/v1/comment/create-comment": {
+            "post": {
+                "tags": ["Comment"],
+                "summary": "create comment",
+                "description": "Create comment",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "properties": {
+                        "content": {
+                            "type": "string",
+                            "required": false
+                        },
+                        "course_id": {
+                            "type": "string",
+                            "required": true
+                        },
+                        "tag": {
+                            "type": "string",
+                            "example": "COMMENT,QUESTION,ANSWER"
+                        },
+                        "question_id": {
+                            "type": "string"
+                        }
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Comment created"
+                    }
+                }
+            }
+        },
+        "/api/v1/comment/{id}": {
+            "get": {
+                "tags": ["Comment"],
+                "summary": "get comment by id",
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "type": "string",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Comment by  id"
+                    }
+                }
+            }
+        },
+        "/api/v1/comment/user/{id}": {
+            "get": {
+                "tags": ["Comment"],
+                "summary": "get comment by user id",
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "type": "string",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Comment by user id"
+                    }
+                }
+            }
+        },
+        "/api/v1/comment/update-comment/{id}": {
+            "put": {
+                "tags": ["Comment"],
+                "summary": "update comment",
+                "description": "Update comment",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [{
+                        "in": "body",
+                        "name": "body",
+                        "properties": {
+                            "content": {
+                                "type": "string",
+                                "required": false
+                            },
+                            "tag": {
+                                "type": "string",
+                                "example": "COMMENT,QUESTION,ANSWER"
+                            }
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Comment created"
+                    }
+                }
+            }
+        },
+        "/api/v1/comment/question/{id}": {
+            "get": {
+                "tags": ["Comment"],
+                "summary": "get answers by comment id",
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "type": "string",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Answers by Comment id"
+                    }
+                }
+            }
+        },
+        "/api/v1/course/create-course": {
+            "post": {
+                "tags": ["Course"],
+                "summary": "Creating a course",
+                "description": "Creating a course",
+                "consumes": ["multipart/form-data"],
+                "produces": ["application/json"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "properties": {
+                        "title": {
+                            "type": "string",
+                            "example": "title of the course",
+                            "required": true
+                        },
+                        "category": {
+                            "type": "string",
+                            "example": "UX_UI_DESIGN",
+                            "required": true
+                        },
+                        "level": {
+                            "type": "string",
+                            "example": "BEGGINER",
+                            "required": true
+                        },
+                        "price": {
+                            "type": "number",
+                            "example": 200,
+                            "required": true
+                        },
+                        "description": {
+                            "type": "string",
+                            "example": "course description",
+                            "required": true
+                        },
+                        "whatToLearn": {
+                            "type": "string",
+                            "example": "string",
+                            "required": true
+                        },
+                        "coverImage": {
+                            "type": "File",
+                            "example": "image.png"
+                        },
+                        "video": {
+                            "type": "file",
+                            "example": "video.mp4"
+                        }
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "course created"
+                    }
+                }
+            }
+        },
+        "/api/v1/course/all": {
+            "get": {
+                "tags": ["Course"],
+                "summary": "get all courses",
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "all courses"
+                    }
+                }
+            }
+        },
+        "/api/v1/course/{id}": {
+            "get": {
+                "tags": ["Course"],
+                "summary": "get course by id",
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "type": "string",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "course by  id"
+                    }
+                }
+            }
+        },
+        "/api/v1/course/user/{id}": {
+            "get": {
+                "tags": ["Course"],
+                "summary": "get comment by creator id",
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "type": "string",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Courses by creator id"
+                    }
+                }
+            }
+        },
+        "/api/v1/course/update-course/{id}": {
+            "put": {
+                "tags": ["Course"],
+                "summary": "update course",
+                "description": "Update course",
+                "consumes": ["multipart/form-data"],
+                "produces": ["application/json"],
+                "parameters": [{
+                        "in": "body",
+                        "name": "body",
+                        "properties": {
+                            "title": {
+                                "type": "string",
+                                "example": "title of the course"
+                            },
+                            "category": {
+                                "type": "string",
+                                "example": "UX_UI_DESIGN"
+                            },
+                            "level": {
+                                "type": "string",
+                                "example": "BEGGINER"
+                            },
+                            "price": {
+                                "type": "number",
+                                "example": 200
+                            },
+                            "description": {
+                                "type": "string",
+                                "example": "course description"
+                            },
+                            "whatToLearn": {
+                                "type": "string",
+                                "example": "string"
+                            },
+                            "coverImage": {
+                                "type": "File",
+                                "example": "image.png"
+                            },
+                            "video": {
+                                "type": "file",
+                                "example": "video.mp4"
+                            }
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Comment created"
+                    }
+                }
+            }
+        },
+        "/api/v1/course/delete-course/{id}": {
+            "delete": {
+                "tags": ["Course"],
+                "summary": "delete course by id",
+                "produces": ["application/json"],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "type": "string",
+                    "required": true
+                }],
+                "responses": {
+                    "200": {
+                        "description": "course deleted"
+                    }
+                }
+            }
+        }
+    }
+}
