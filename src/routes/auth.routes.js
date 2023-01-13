@@ -1,6 +1,6 @@
 import express from "express";
 import { changePasswordController, forgotPasswordController, getUserDetails, loginController, register, 
-    resetPasswordController, verifyEmailController } from "../controllers/auth/auth.controller";
+    resetPasswordController, verifyEmailController } from "../controllers/auth/auth.controller.js";
 
 const router = express.Router();
 
@@ -24,3 +24,5 @@ router.put("/change-password", changePasswordController);
 
 // Get user details
 router.get("/user-details", getUserDetails);
+
+export default router;

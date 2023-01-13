@@ -1,4 +1,5 @@
-import { changePassword, createUser, forgotPassword, getUserById, login, resetPassword, verifyEmail } from "../../services/auth/auth.service"
+import { changePassword, createUser, forgotPassword, 
+    getUserById, login, resetPassword, verifyEmail } from "../../services/auth/auth.service.js"
 
 // Create a new user
 export const register = async (req,res) => {

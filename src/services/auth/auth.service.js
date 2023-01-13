@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import lodash from 'lodash';
-import generateRandomAlphaNumericCode from '../../utils/random';
-import { hashPassword, comparePassword } from './password.service';
+import generateRandomAlphaNumericCode from '../../utils/random.js';
+// import { hashPassword, comparePassword } from './password.service.js';
 
 // create user
 export const createUser  = async (data) => {

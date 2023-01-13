@@ -21,14 +21,6 @@
         {
             "name": "User",
             "description": "Operations about user"
-        },
-        {
-            "name": "Comment",
-            "description": "Operations about comment"
-        },
-        {
-            "name": "Course",
-            "description": "Operations about course"
         }
     ],
     "paths": {
@@ -43,23 +35,33 @@
                     "in": "body",
                     "name": "body",
                     "properties": {
-                        "fullName": {
+                        "names": {
                             "type": "string",
-                            "example": "Byose David"
+                            "example": "Mfitumukiza Peter"
                         },
                         "email": {
                             "type": "string",
-                            "example": "davidshumbusho10@gmail.com",
+                            "example": "peter@gmail.com",
                             "required": true
                         },
                         "password": {
-                            "type": "string"
+                            "type": "string",
+                            "example":"string",
+                            "required": true
+                        },
+                        "country": {
+                            "type":"string",
+                            "example":"string",
+                            "require": true
                         }
                     }
                 }],
                 "responses": {
                     "201": {
                         "description": "account created, check your email"
+                    },
+                    "500": {
+                        "description": "internal server error"
                     }
                 }
             }
@@ -77,7 +79,7 @@
                     "properties": {
                         "email": {
                             "type": "string",
-                            "example": "davidshumbusho10@gmail.com",
+                            "example": "peter@gmail.com",
                             "required": true
                         },
                         "code": {
@@ -88,6 +90,9 @@
                 "responses": {
                     "200": {
                         "description": "Email verified, you can now login"
+                    },
+                    "500": {
+                        "description": "internal server error"
                     }
                 }
             }
@@ -105,17 +110,21 @@
                     "properties": {
                         "email": {
                             "type": "string",
-                            "example": "davidshumbusho10@gmail.com",
+                            "example": "peter10@gmail.com",
                             "required": true
                         },
                         "password": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "passowrd"
                         }
                     }
                 }],
                 "responses": {
                     "200": {
                         "description": "Logged in"
+                    },
+                    "500": {
+                        "description": "internal server error"
                     }
                 }
             }
@@ -133,7 +142,7 @@
                     "properties": {
                         "email": {
                             "type": "string",
-                            "example": "davidshumbusho10@gmail.com",
+                            "example": "peter@gmail.com",
                             "required": true
                         }
                     }
@@ -141,6 +150,9 @@
                 "responses": {
                     "200": {
                         "description": "check your email"
+                    },
+                    "500": {
+                        "description": "internal server error"
                     }
                 }
             }
@@ -158,20 +170,27 @@
                     "properties": {
                         "email": {
                             "type": "string",
-                            "example": "davidshumbusho10@gmail.com",
+                            "example": "peter@gmail.com",
                             "required": true
                         },
                         "code": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "string",
+                            "required": true
                         },
                         "password": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "string",
+                            "required": true
                         }
                     }
                 }],
                 "responses": {
                     "201": {
                         "description": "password reset"
+                    },
+                    "500": {
+                        "description": "internal server error"
                     }
                 }
             }
@@ -189,7 +208,7 @@
                     "properties": {
                         "email": {
                             "type": "string",
-                            "example": "davidshumbusho10@gmail.com",
+                            "example": "peter@gmail.com",
                             "required": true
                         },
                         "oldPassword": {
@@ -204,11 +223,14 @@
                 "responses": {
                     "200": {
                         "description": "Password changed."
+                    },
+                    "500": {
+                        "description": "internal server error"
                     }
                 }
             }
         },
-        "/api/v1/auth/me": {
+        "/api/v1/auth/user-details": {
             "get": {
                 "tags": ["Auth"],
                 "summary": "get user details",
@@ -250,313 +272,7 @@
                     }
                 }
             }
-        },
-        "/api/v1/comment/create-comment": {
-            "post": {
-                "tags": ["Comment"],
-                "summary": "create comment",
-                "description": "Create comment",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [{
-                    "in": "body",
-                    "name": "body",
-                    "properties": {
-                        "content": {
-                            "type": "string",
-                            "required": false
-                        },
-                        "course_id": {
-                            "type": "string",
-                            "required": true
-                        },
-                        "tag": {
-                            "type": "string",
-                            "example": "COMMENT,QUESTION,ANSWER"
-                        },
-                        "question_id": {
-                            "type": "string"
-                        }
-                    }
-                }],
-                "responses": {
-                    "200": {
-                        "description": "Comment created"
-                    }
-                }
-            }
-        },
-        "/api/v1/comment/{id}": {
-            "get": {
-                "tags": ["Comment"],
-                "summary": "get comment by id",
-                "produces": ["application/json"],
-                "parameters": [{
-                    "name": "id",
-                    "in": "path",
-                    "type": "string",
-                    "required": true
-                }],
-                "responses": {
-                    "200": {
-                        "description": "Comment by  id"
-                    }
-                }
-            }
-        },
-        "/api/v1/comment/user/{id}": {
-            "get": {
-                "tags": ["Comment"],
-                "summary": "get comment by user id",
-                "produces": ["application/json"],
-                "parameters": [{
-                    "name": "id",
-                    "in": "path",
-                    "type": "string",
-                    "required": true
-                }],
-                "responses": {
-                    "200": {
-                        "description": "Comment by user id"
-                    }
-                }
-            }
-        },
-        "/api/v1/comment/update-comment/{id}": {
-            "put": {
-                "tags": ["Comment"],
-                "summary": "update comment",
-                "description": "Update comment",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [{
-                        "in": "body",
-                        "name": "body",
-                        "properties": {
-                            "content": {
-                                "type": "string",
-                                "required": false
-                            },
-                            "tag": {
-                                "type": "string",
-                                "example": "COMMENT,QUESTION,ANSWER"
-                            }
-                        }
-                    },
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "type": "string",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Comment created"
-                    }
-                }
-            }
-        },
-        "/api/v1/comment/question/{id}": {
-            "get": {
-                "tags": ["Comment"],
-                "summary": "get answers by comment id",
-                "produces": ["application/json"],
-                "parameters": [{
-                    "name": "id",
-                    "in": "path",
-                    "type": "string",
-                    "required": true
-                }],
-                "responses": {
-                    "200": {
-                        "description": "Answers by Comment id"
-                    }
-                }
-            }
-        },
-        "/api/v1/course/create-course": {
-            "post": {
-                "tags": ["Course"],
-                "summary": "Creating a course",
-                "description": "Creating a course",
-                "consumes": ["multipart/form-data"],
-                "produces": ["application/json"],
-                "parameters": [{
-                    "in": "body",
-                    "name": "body",
-                    "properties": {
-                        "title": {
-                            "type": "string",
-                            "example": "title of the course",
-                            "required": true
-                        },
-                        "category": {
-                            "type": "string",
-                            "example": "UX_UI_DESIGN",
-                            "required": true
-                        },
-                        "level": {
-                            "type": "string",
-                            "example": "BEGGINER",
-                            "required": true
-                        },
-                        "price": {
-                            "type": "number",
-                            "example": 200,
-                            "required": true
-                        },
-                        "description": {
-                            "type": "string",
-                            "example": "course description",
-                            "required": true
-                        },
-                        "whatToLearn": {
-                            "type": "string",
-                            "example": "string",
-                            "required": true
-                        },
-                        "coverImage": {
-                            "type": "File",
-                            "example": "image.png"
-                        },
-                        "video": {
-                            "type": "file",
-                            "example": "video.mp4"
-                        }
-                    }
-                }],
-                "responses": {
-                    "201": {
-                        "description": "course created"
-                    }
-                }
-            }
-        },
-        "/api/v1/course/all": {
-            "get": {
-                "tags": ["Course"],
-                "summary": "get all courses",
-                "produces": ["application/json"],
-                "responses": {
-                    "200": {
-                        "description": "all courses"
-                    }
-                }
-            }
-        },
-        "/api/v1/course/{id}": {
-            "get": {
-                "tags": ["Course"],
-                "summary": "get course by id",
-                "produces": ["application/json"],
-                "parameters": [{
-                    "name": "id",
-                    "in": "path",
-                    "type": "string",
-                    "required": true
-                }],
-                "responses": {
-                    "200": {
-                        "description": "course by  id"
-                    }
-                }
-            }
-        },
-        "/api/v1/course/user/{id}": {
-            "get": {
-                "tags": ["Course"],
-                "summary": "get comment by creator id",
-                "produces": ["application/json"],
-                "parameters": [{
-                    "name": "id",
-                    "in": "path",
-                    "type": "string",
-                    "required": true
-                }],
-                "responses": {
-                    "200": {
-                        "description": "Courses by creator id"
-                    }
-                }
-            }
-        },
-        "/api/v1/course/update-course/{id}": {
-            "put": {
-                "tags": ["Course"],
-                "summary": "update course",
-                "description": "Update course",
-                "consumes": ["multipart/form-data"],
-                "produces": ["application/json"],
-                "parameters": [{
-                        "in": "body",
-                        "name": "body",
-                        "properties": {
-                            "title": {
-                                "type": "string",
-                                "example": "title of the course"
-                            },
-                            "category": {
-                                "type": "string",
-                                "example": "UX_UI_DESIGN"
-                            },
-                            "level": {
-                                "type": "string",
-                                "example": "BEGGINER"
-                            },
-                            "price": {
-                                "type": "number",
-                                "example": 200
-                            },
-                            "description": {
-                                "type": "string",
-                                "example": "course description"
-                            },
-                            "whatToLearn": {
-                                "type": "string",
-                                "example": "string"
-                            },
-                            "coverImage": {
-                                "type": "File",
-                                "example": "image.png"
-                            },
-                            "video": {
-                                "type": "file",
-                                "example": "video.mp4"
-                            }
-                        }
-                    },
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "type": "string",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Comment created"
-                    }
-                }
-            }
-        },
-        "/api/v1/course/delete-course/{id}": {
-            "delete": {
-                "tags": ["Course"],
-                "summary": "delete course by id",
-                "produces": ["application/json"],
-                "parameters": [{
-                    "name": "id",
-                    "in": "path",
-                    "type": "string",
-                    "required": true
-                }],
-                "responses": {
-                    "200": {
-                        "description": "course deleted"
-                    }
-                }
-            }
         }
+        
     }
 }
