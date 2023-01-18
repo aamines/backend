@@ -4,7 +4,7 @@ import { changePassword, createUser, forgotPassword,
 // Create a new user
 export const register = async (req,res) => {
     try {
-        const data = req.body.data;
+        const data = req.body;
         const result = await createUser(data);
         res.status(201).json(result);
     } catch (error) {

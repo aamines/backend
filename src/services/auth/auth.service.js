@@ -2,14 +2,15 @@ import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import lodash from 'lodash';
 import generateRandomAlphaNumericCode from '../../utils/random.js';
-// import { hashPassword, comparePassword } from './password.service.js';
+import { hashPassword, comparePassword } from './password.service.js';
+import sendEmail from '../../utils/sendEmail.js';
 
 // create user
 export const createUser  = async (data) => {
     const prisma =  new PrismaClient();
     const user = await findUserByEmail(data.email);
     if(user){
-        return "Email already used"
+        return "Email already used";
     }
     const hashedPassowrd = await hashPassword(data.password);
     const code  = generateRandomAlphaNumericCode().toUpperCase();
@@ -26,7 +27,7 @@ export const createUser  = async (data) => {
     })
 
     if (newUser) {
-        sendEMail({
+        sendEmail({
             to: data.email,
             subject: 'Projectia - Email Verification',
             from: `${process.env.EMAIL_USER}`,
@@ -41,7 +42,7 @@ export const createUser  = async (data) => {
                   <h3>Thanks for using Projectia</h3>
                   `
         });
-        return `check ${user.email} for verification code`;
+        return `check ${newUser.email} for verification code`;
     }
     return "unable to create user";
 }
@@ -186,7 +187,11 @@ export const getUserById = async (id) => {
 // find user by email
 export const findUserByEmail = async (email) => {
     const prisma = new PrismaClient();
-    const user = await prisma.user.findUnique(email);
+    const user = await prisma.user.findUnique({
+        where: {
+            email
+        }
+    });
     if(user){
         return user;
     }else{
