@@ -19,7 +19,7 @@ app.set("view engine", "pug");
 app.set("views", "./views");
 
 //middlewares
-app.use(logger("dev"));
+// app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -27,8 +27,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/documentation", swaggerUi.serve, swaggerUi.setup(swaggerDocs, {}, { docExpansion: 'none' }))
 
 //endpoints
+
 app.use("api/v1/auth", authRoutes);
 app.get("/post",postrouter)
+
+app.use("/api/v1/auth", authRoutes);
+
 
 //default page
 app.get("/", (req, res) => {
