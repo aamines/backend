@@ -40,7 +40,7 @@ export const loginController = async (req,res) => {
 // Get info of the logged in user
 export const getUserDetails = async(req,res) => {
     try {
-        const result = await getUserById(req.body.id);
+        const result = await getUserById(req.user.id);
         res.status(200).json(result);
     } catch (error) {
         console.log(error);
