@@ -59,6 +59,7 @@ export const updateUserService = async(userId, data) => {
         })
         if (updatedUser) {
             //return user without password using lodash
+            console.log(updatedUser);
             return updatedUser;
         }
     }
