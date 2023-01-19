@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client"
 const prisma=new PrismaClient()
 
-export const createPost=(req,res)=>{
+export const createPost=async (req,res)=>{
     try{
             await prisma.post.create({
             typeId:req.body.typeId,
@@ -16,7 +16,7 @@ export const createPost=(req,res)=>{
     }
 }
 
-export const loadPosts=(req,res)=>{
+export const loadPosts=async (req,res)=>{
     try{
         let posts=await prisma.post.findAll()
         res.status(200).send(posts)
@@ -28,7 +28,7 @@ export const loadPosts=(req,res)=>{
     
 }
 
-export const addReactionToPost=(req,res)=>{
+export const addReactionToPost=async (req,res)=>{
     try{
         const reactions=[]
         reactions=await prisma.post.findAll({where:{postId:req.body.postId}}).reactionId
@@ -43,7 +43,7 @@ export const addReactionToPost=(req,res)=>{
     }
 }
 
-export const loadPostReactions=(req,res)=>{
+export const loadPostReactions=async (req,res)=>{
     try{
         let postReactions=await prisma.post.findMany({where:{postId:req.body.postId}})
         res.status(200).send(postReactions)
@@ -53,7 +53,7 @@ export const loadPostReactions=(req,res)=>{
     }
 }
 
-export const addCommentToPost=(req,res)=>{
+export const addCommentToPost=async (req,res)=>{
     try{
         let comments=[]
         comments=prisma.post.findAll({where:{postId:req.body.postId}}).commentId
@@ -79,7 +79,7 @@ export const addCommentToPost=(req,res)=>{
     }
 }
 
-export const loadPostComments=(req,res)=>{
+export const loadPostComments=async (req,res)=>{
     try{
         let postComments=await prisma.post.findMany({where:{postId:req.body.postId}})
         res.send(postComments)
@@ -89,7 +89,7 @@ export const loadPostComments=(req,res)=>{
     }
 }
 
-export const loadComment=(req,res)=>{
+export const loadComment=async (req,res)=>{
     try{
         let comments=await prisma.comment.findFirst({where:{commentId:req.body.commentId}})
         res.send(comments)
