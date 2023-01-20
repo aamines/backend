@@ -11,13 +11,16 @@ import express from "express"
 const postrouter=express.Router()
 
 postrouter.post("/newPost",createPost)
-postrouter.post("/newCommentReaction",addReactionToComment)
-postrouter.post("/newPostReaction",addReactionToPost)
-postrouter.post("/addCommentToPost",addCommentToPost)
-postrouter.get("/loadComment",loadComment)
-postrouter.get("/loadPostComments",loadPostComments)
-postrouter.get("/loadPostReactions",loadPostReactions)
 postrouter.get("/loadPosts",loadPosts)
+postrouter.post("/newPostReaction",addReactionToPost)
+postrouter.get("/loadPostReactions",loadPostReactions)
+postrouter.post("/newCommentReaction",addReactionToComment)
+postrouter.post("/addCommentToPost",addCommentToPost)
+postrouter.get("/loadPostComments",loadPostComments)
+postrouter.get("/loadComment",loadComment)
+
+
+
 
 export default postrouter
 
