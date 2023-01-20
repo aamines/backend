@@ -30,7 +30,6 @@ export const loginValidation = (req, res, next) => {
 export const forgotPasswordValidation = (req, res, next) => {
     const schema = Joi.object({
         email: Joi.string().min(6).required().email(),
-
     });
     const { error } = schema.validate(req.body);
     if (error) {

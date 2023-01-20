@@ -72,7 +72,7 @@ model Community {
     id          Int                  @id @default(autoincrement())
     name        String
     status      Status               @relation(references: [id], fields: [statusId])
-    statusId    Int
+    statusId    Int                  @default(1)
     description String
     media       Media?               @relation(references: [id], fields: [profile])
     profile     Int?
@@ -82,37 +82,40 @@ model Community {
     Project     Project[]
     Groups      Groups[]
     Achievement Achievement[]
+    Account     Account[]
 }
 
 model Account {
-    id              Int                  @id @default(autoincrement())
-    user            User                 @relation(references: [id], fields: [userId])
-    userId          Int
-    status          Status               @relation(references: [id], fields: [statusId])
-    statusId        Int
-    role            Role                 @relation(references: [id], fields: [roleId])
-    roleId          Int
-    media_profile   Media?               @relation(references: [id], fields: [profile], name: "profile")
-    profile         Int?
-    media_banner    Media?               @relation(references: [id], fields: [banner], name: "banner")
-    banner          Int?
-    createdAt       DateTime             @default(now())
-    updatedAt       DateTime             @updatedAt
-    reactions       Reaction[]
-    comments        Comment[]
-    memories        Memory[]
-    communities     AccountOnCommunity[]
-    Media           Media?               @relation(fields: [mediaId], references: [id])
-    mediaId         Int?
-    Post            Post[]
-    project_owners  Project?             @relation(fields: [project_owner], references: [id], name: "owners")
-    project_owner   Int?
-    project_upvotes Project?             @relation(fields: [project_upvote], references: [id], name: "upvotes")
-    project_upvote  Int?
-    Groups          Groups?              @relation(fields: [groupsId], references: [id])
-    groupsId        Int?
-    Achievement     Achievement?         @relation(fields: [achievementId], references: [id])
-    achievementId   Int?
+    id                 Int                  @id @default(autoincrement())
+    user               User                 @relation(references: [id], fields: [userId])
+    userId             Int
+    status             Status               @relation(references: [id], fields: [statusId])
+    statusId           Int                  @default(1)
+    role               Role                 @relation(references: [id], fields: [roleId])
+    roleId             Int                  @default(3)
+    Community          Community            @relation(fields: [communityId], references: [id])
+    communityId        Int
+    media_profile      Media?               @relation(references: [id], fields: [profile], name: "profile")
+    profile            Int?
+    media_banner       Media?               @relation(references: [id], fields: [banner], name: "banner")
+    banner             Int?
+    createdAt          DateTime             @default(now())
+    updatedAt          DateTime             @updatedAt
+    reactions          Reaction[]
+    comments           Comment[]
+    memories           Memory[]
+    Media              Media?               @relation(fields: [mediaId], references: [id])
+    mediaId            Int?
+    Post               Post[]
+    project_owners     Project?             @relation(fields: [project_owner], references: [id], name: "owners")
+    project_owner      Int?
+    project_upvotes    Project?             @relation(fields: [project_upvote], references: [id], name: "upvotes")
+    project_upvote     Int?
+    Groups             Groups?              @relation(fields: [groupsId], references: [id])
+    groupsId           Int?
+    Achievement        Achievement?         @relation(fields: [achievementId], references: [id])
+    achievementId      Int?
+    AccountOnCommunity AccountOnCommunity[]
 }
 
 model AccountOnCommunity {
