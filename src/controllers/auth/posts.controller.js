@@ -99,12 +99,12 @@ export const loadComment=async (req,res)=>{
     }
 }
 
-export const addReactionToComment=(req,res)=>{
+export const addReactionToComment=async(req,res)=>{
     try{
         const reactions=[]
-        reactions=prisma.comment.findAll({where:{commentId:req.body.commentId}}).commentId
+        reactions=await prisma.comment.findAll({where:{commentId:req.body.commentId}}).commentId
         reactions.push(req.body.reactionId)
-        prisma.comment.update({where:{commentId:req.body.commentId},
+        await prisma.comment.update({where:{commentId:req.body.commentId},
             reactionId:reactions
         })
     }
