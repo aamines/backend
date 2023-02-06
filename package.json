@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage",
+    "start": "node ./src/server.js",
     "dev": "nodemon ./src/server.js",
     "migrate:dev": "prisma migrate dev --preview-feature",
     "migrate:dev:create": "prisma migrate dev --create-only --preview-feature",
