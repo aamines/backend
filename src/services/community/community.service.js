@@ -10,6 +10,7 @@ export const createCommunity = async(communityDetails, userId) =>{
         data: {
             name: communityDetails.name,
             description: communityDetails.description,
+            creatorId: userId
         }
     });
     if(!newCommunity){
@@ -76,4 +77,13 @@ export const findCommunitById = async(communiyId) =>{
         return null;
     }
     return community;
+}
+
+// find community by creatorId
+export const findCommunitByCreatorId = async(creatorId) => {
+    const communities = await prisma.community.findMany({
+        where:{
+            creatorId: creatorId
+        }
+    })
 }

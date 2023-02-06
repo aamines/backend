@@ -32,6 +32,19 @@ export const createAdminAccount = async(userId, communityId) => {
   return newAccount;
 };
 
+// Get Accounts by userId
+export const getAccountsByUser = async(userId) => {
+  const accounts  = await prisma.account.findMany({
+    where:{
+      userId: userId
+    }
+  });
+  if(!accounts){
+    return "no accounts found";
+  }
+  return accounts;
+}
+
 // delete account
 export const deleteAccount = async(userEmail, communityId) => {
   const community = await findCommunitById(communityId);
