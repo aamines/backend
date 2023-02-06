@@ -1,11 +1,11 @@
-import { createPost } from "../controllers/auth/posts.controller";
-import { addReactionToComment } from "../controllers/auth/posts.controller";
-import { addCommentToPost } from "../controllers/auth/posts.controller";
-import { addReactionToPost } from "../controllers/auth/posts.controller";
-import { loadComment } from "../controllers/auth/posts.controller";
-import { loadPostComments } from "../controllers/auth/posts.controller";
-import { loadPostReactions } from "../controllers/auth/posts.controller";
-import { loadPosts } from "../controllers/auth/posts.controller";
+import { createPost } from "../controllers/auth/posts.controller.js";
+import { addReactionToComment } from "../controllers/auth/posts.controller.js";
+import { addCommentToPost } from "../controllers/auth/posts.controller.js";
+import { addReactionToPost } from "../controllers/auth/posts.controller.js";
+import { loadComment } from "../controllers/auth/posts.controller.js";
+import { loadPostComments } from "../controllers/auth/posts.controller.js";
+import { loadPostReactions } from "../controllers/auth/posts.controller.js";
+import { loadPosts } from "../controllers/auth/posts.controller.js";
 import express from "express"
 
 const postrouter=express.Router()

@@ -3,11 +3,11 @@ import logger from "morgan";
 import dotenv from "dotenv";
 import express from "express";
 import swaggerUi from "swagger-ui-express";
-import swaggerDocs from "./swagger/swagger.json";
+import swaggerDocs from "./swagger.json" assert { type: "json" };
 
 //importing routes
 import authRoutes from "./routes/auth.routes.js"
-import postrouter from "./routes/posts.routes";
+import postrouter from "./routes/posts.routes.js";
 
 //setting up server
 const app = express();
