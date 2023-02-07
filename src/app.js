@@ -3,7 +3,7 @@ import logger from "morgan";
 import dotenv from "dotenv";
 import express from "express";
 import swaggerUi from "swagger-ui-express";
-import swaggerDocs from "./swagger.json" assert { type: "json" };
+import swaggerDocs from "./swagger.json";
 
 //importing routes
 import authRoutes from "./routes/auth.routes.js"
