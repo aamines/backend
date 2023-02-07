@@ -1,5 +1,5 @@
-//sending email with nodemailer
-import nodemailer from 'nodemailer';
+const nodemailer = require('nodemailer');
+
 function sendEmail(options) {
     const transport = nodemailer.createTransport({
         service: 'gmail',
@@ -21,4 +21,5 @@ function sendEmail(options) {
             console.log(err);
     })
 }
-export default sendEmail;
+
+module.exports = sendEmail;

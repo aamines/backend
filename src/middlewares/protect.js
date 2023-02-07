@@ -1,7 +1,7 @@
-import { PrismaClient } from '@prisma/client';
-import jwt from "jsonwebtoken";
+const { PrismaClient } = require('@prisma/client');
+const jwt = require("jsonwebtoken");
 //protect routes middleware
-export const protect = async (req, res, next) => {
+module.exports.protect = async (req, res, next) => {
     const prisma = new PrismaClient();
     const token = req.header('authorization') || req.cookies.access_token;
     if (!token) return res.status(401).send('Access Denied');

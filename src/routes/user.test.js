@@ -1,5 +1,5 @@
-import supertest from "supertest";
-import app from "../app.js";
+const supertest = required("supertest");
+const app = required("../app.js");
 
 let userId;
 

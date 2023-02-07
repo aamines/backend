@@ -1,13 +1,13 @@
-import cors from "cors";
-import logger from "morgan";
-import dotenv from "dotenv";
-import express from "express";
-import swaggerUi from "swagger-ui-express";
-import swaggerDocs from "./swagger.json" assert { type: "json" };
+const cors = require("cors");
+const logger = require("morgan");
+const dotenv = require("dotenv");
+const express = require("express");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocs = require("./swagger/swagger.json");
 
-//importing routes
-import authRoutes from "./routes/auth.routes.js"
-import postrouter from "./routes/posts.routes.js";
+//consting routes
+const authRoutes = require("./routes/auth.routes.js");
+const postRoutes = require("./routes/posts.routes.js");
 
 //setting up server
 const app = express();
@@ -28,16 +28,13 @@ app.use("/documentation", swaggerUi.serve, swaggerUi.setup(swaggerDocs, {}, { do
 
 //endpoints
 
-app.use("api/v1/auth", authRoutes);
-app.get("/post",postrouter)
-
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/post", postRoutes)
 
 
 //default page
 app.get("/", (req, res) => {
-  res.render("index");
+  res.send("<p>Welcome to Projectia Backend APIs </p>")
 });
 
-
-export default app;
+module.exports = app;

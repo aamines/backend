@@ -1,7 +1,7 @@
-import { updateUserService } from "../../services/user/user.service";
+const { updateUserService } = require("../../services/user/user.service");
 
 // Update user information
-export const updateUser = async(req,res) =>{
+modules.exports.updateUser = async(req,res) =>{
     try {
         const { id } = req.user;
         const result = await updateUserService(id, req.body);

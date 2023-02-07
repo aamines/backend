@@ -1,27 +1,23 @@
-import { createPost } from "../controllers/auth/posts.controller.js";
-import { addReactionToComment } from "../controllers/auth/posts.controller.js";
-import { addCommentToPost } from "../controllers/auth/posts.controller.js";
-import { addReactionToPost } from "../controllers/auth/posts.controller.js";
-import { loadComment } from "../controllers/auth/posts.controller.js";
-import { loadPostComments } from "../controllers/auth/posts.controller.js";
-import { loadPostReactions } from "../controllers/auth/posts.controller.js";
-import { loadPosts } from "../controllers/auth/posts.controller.js";
-import express from "express"
+const { createPost } = require("../controllers/auth/posts.controller");
+const { addReactionToComment } = require("../controllers/auth/posts.controller.js");
+const { addCommentToPost } = require("../controllers/auth/posts.controller.js");
+const { addReactionToPost } = require("../controllers/auth/posts.controller.js");
+const { loadComment } = require("../controllers/auth/posts.controller.js");
+const { loadPostComments } = require("../controllers/auth/posts.controller.js");
+const { loadPostReactions } = require("../controllers/auth/posts.controller.js");
+const { loadPosts } = require("../controllers/auth/posts.controller.js");
+const express = require("express");
 
-const postrouter=express.Router()
+const router=express.Router()
 
-postrouter.post("/newPost",createPost)
-postrouter.get("/loadPosts",loadPosts)
-postrouter.post("/newPostReaction",addReactionToPost)
-postrouter.get("/loadPostReactions",loadPostReactions)
-postrouter.post("/newCommentReaction",addReactionToComment)
-postrouter.post("/addCommentToPost",addCommentToPost)
-postrouter.get("/loadPostComments",loadPostComments)
-postrouter.get("/loadComment",loadComment)
-
-
+router.post("/newPost", createPost)
+router.get("/loadPosts", loadPosts)
+router.post("/newPostReaction", addReactionToPost)
+router.get("/loadPostReactions", loadPostReactions)
+router.post("/newCommentReaction", addReactionToComment)
+router.post("/addCommentToPost", addCommentToPost)
+router.get("/loadPostComments", loadPostComments)
+router.get("/loadComment", loadComment)
 
 
-export default postrouter
-
-
+module.exports = router;

@@ -1,10 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+const PrismaClient = require("@prisma/client");
 
 //configs
 const prisma = new PrismaClient();
 
 //create account
-export const createAccount = (user) => {
+module.exports.createAccount = (user) => {
   return new Promise(async (resolve, reject) => {
     await prisma.account
       .create({
@@ -24,7 +24,7 @@ export const createAccount = (user) => {
 };
 
 //delete accounts
-export const deleteAccounts = (id) => {
+module.exports.deleteAccounts = (id) => {
   return new Promise((resolve, reject) => {
     prisma.account
       .deleteMany({

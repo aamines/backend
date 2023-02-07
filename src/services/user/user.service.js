@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
-export const updateUserService = async(userId, data) => {
+module.exports.updateUserService = async(userId, data) => {
     const prisma = new PrismaClient();
     const existingUser = await prisma.user.findUnique({
         where:{
