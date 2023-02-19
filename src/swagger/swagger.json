@@ -273,7 +273,7 @@
                 }
             }
         },
-        "/post/newPost":{
+        "/api/v1/post/newPost":{
             "post":{
                 "summary":"get post creation data",
                 "description":"create a new post",
@@ -303,7 +303,7 @@
                 }]
             }
         },
-        "/post/loadPosts":{
+        "/api/v1/post/loadPosts":{
             "get":{
                 "summary":"get posts",
                 "description":"load existing posts",
@@ -311,7 +311,7 @@
                 "produces":["application/json"]
             }
         },
-        "/post/loadPostReactions":{
+        "/api/v1/post/loadPostReactions":{
             "get":{
                 "summary":"get post reactions",
                 "description":"load post reactions",
@@ -329,7 +329,7 @@
                 }]
             }
         },
-        "/post/newPostReaction":{
+        "/api/v1/post/newPostReaction":{
             "post":{
                 "summary":"new post reactions",
                 "description":"new post reactions",
@@ -351,7 +351,7 @@
                 }]
             }
         },
-        "/post/addCommentToPost":{
+        "/api/v1/post/addCommentToPost":{
             "post":{
                 "summary":"new post comments",
                 "description":"new post comments",
@@ -377,7 +377,7 @@
                 }]
             }
         },
-        "/post/loadPostComments":{
+        "/api/v1/post/loadPostComments":{
             "get":{
                 "summary":"get post comments",
                 "description":"load post comments",
@@ -395,7 +395,7 @@
                 }]
             }
         },
-        "/post/loadComment":{
+        "/api/v1/post/loadComment":{
             "get":{
                 "summary":"get comment",
                 "description":"load comment",
@@ -417,7 +417,7 @@
                 }]
             }
         },
-        "/post/newCommentReaction":{
+        "/api/v1/post/newCommentReaction":{
             "get":{
                 "summary":"new reaction",
                 "description":"new reaction",
@@ -434,6 +434,50 @@
                     }
                 }]
             }
+        },
+        "/api/v1/story/new":{
+            "post":{
+                "summary":"new story",
+                "description":"new story",
+                "consumes":["application/json"],
+                "produces":["application/json"],
+                "parameters":[{
+                    "in":"body",
+                    "name":"body",
+                    "properties":{
+                        "storyId":{
+                            "type":"string",
+                            "required":true
+                        },
+                        "postedBy":{
+                            "type":"string",
+                            "required":true
+                        },
+                        "communityId":{
+                            "type":"string",
+                            "required":true
+                        }
+                    }
+                }]
+            }
+        },
+        "/api/v1/story/load":{
+            "summary":"load stories",
+            "consumes":["application/json"],
+            "produces":["application/json"],
+            "parameters":[{
+                    "in":"body",
+                    "name":"body"
+                }]
+        },
+        "/api/v1/story/id":{
+            "summary":"load story",
+            "consumes":["application/json"],
+            "produces":["application/json"],
+            "parameters":[{
+                    "in":"body",
+                    "name":"body"
+                }]
         }
         
         

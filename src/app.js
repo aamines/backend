@@ -8,6 +8,7 @@ const swaggerDocs = require("./swagger/swagger.json");
 //consting routes
 const authRoutes = require("./routes/auth.routes.js");
 const postRoutes = require("./routes/posts.routes.js");
+const storyRoutes=require("../src/routes/story.routes")
 
 //setting up server
 const app = express();
@@ -30,6 +31,7 @@ app.use("/documentation", swaggerUi.serve, swaggerUi.setup(swaggerDocs, {}, { do
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/post", postRoutes)
+app.use("/api/v1/story", storyRoutes)
 
 
 //default page
