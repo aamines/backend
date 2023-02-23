@@ -8,7 +8,7 @@ const swaggerDocs = require("./swagger/swagger.json");
 //consting routes
 const authRoutes = require("./routes/auth.routes.js");
 const postRoutes = require("./routes/posts.routes.js");
-const storyRoutes=require("../src/routes/story.routes")
+const storyRoutes = require("../src/routes/story.routes")
 
 //setting up server
 const app = express();

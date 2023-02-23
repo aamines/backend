@@ -10,9 +10,9 @@ datasource db {
 //media system
 
 model Media {
-    id               Int          @id @default(autoincrement())
+    id               String       @id @default(cuid())
     media_type       Media_type   @relation(fields: [media_typeId], references: [id])
-    media_typeId     Int
+    media_typeId     String
     media_url        String
     createdAt        DateTime     @default(now())
     updatedAt        DateTime     @updatedAt
@@ -21,15 +21,15 @@ model Media {
     Account_profiles Account[]    @relation(name: "profile")
     Account_banners  Account[]    @relation(name: "banner")
     Project          Project?     @relation(fields: [projectId], references: [id])
-    projectId        Int?
+    projectId        String?
     Groups_profiles  Groups[]     @relation(name: "profile")
     Groups_banners   Groups[]     @relation(name: "banner")
     Achievement      Achievement? @relation(fields: [achievementId], references: [id])
-    achievementId    Int?
+    achievementId    String?
 }
 
 model Media_type {
-    id         Int     @id @default(autoincrement())
+    id         String  @id @default(cuid())
     media_type String
     Media      Media[]
 }
@@ -37,7 +37,7 @@ model Media_type {
 //user system
 
 model Status {
-    id          Int         @id @default(autoincrement())
+    id          String      @id @default(cuid())
     status      String
     accounts    Account[]
     communities Community[]
@@ -45,13 +45,13 @@ model Status {
 }
 
 model Role {
-    id       Int       @id @default(autoincrement())
+    id       String    @id @default(cuid())
     role     String
     accounts Account[]
 }
 
 model User {
-    id                             Int         @id @default(autoincrement())
+    id                             String      @id @default(cuid())
     names                          String
     email                          String      @unique
     password                       String
@@ -64,21 +64,21 @@ model User {
     createdAt                      DateTime    @default(now())
     updatedAt                      DateTime    @updatedAt
     status                         Status      @relation(fields: [statusId], references: [id])
-    statusId                       Int         @default(1)
+    statusId                       String
     accounts                       Account[]
     Community                      Community[]
 }
 
 model Community {
-    id          Int                  @id @default(autoincrement())
+    id          String               @id @default(cuid())
     name        String
     status      Status               @relation(references: [id], fields: [statusId])
-    statusId    Int                  @default(1)
+    statusId    String
     description String
     media       Media?               @relation(references: [id], fields: [profile])
-    profile     Int?
+    profile     String?
     User        User                 @relation(fields: [creatorId], references: [id])
-    creatorId   Int
+    creatorId   String
     createdAt   DateTime             @default(now())
     updatedAt   DateTime             @updatedAt
     accounts    AccountOnCommunity[]
@@ -89,57 +89,57 @@ model Community {
 }
 
 model Account {
-    id                 Int                  @id @default(autoincrement())
+    id                 String               @id @default(cuid())
     user               User                 @relation(references: [id], fields: [userId])
-    userId             Int
+    userId             String
     status             Status               @relation(references: [id], fields: [statusId])
-    statusId           Int                  @default(1)
+    statusId           String
     role               Role                 @relation(references: [id], fields: [roleId])
-    roleId             Int                  @default(3)
+    roleId             String
     Community          Community            @relation(fields: [communityId], references: [id])
-    communityId        Int
+    communityId        String
     media_profile      Media?               @relation(references: [id], fields: [profile], name: "profile")
-    profile            Int?
+    profile            String?
     media_banner       Media?               @relation(references: [id], fields: [banner], name: "banner")
-    banner             Int?
+    banner             String?
     createdAt          DateTime             @default(now())
     updatedAt          DateTime             @updatedAt
     reactions          Reaction[]
     comments           Comment[]
     memories           Memory[]
     Media              Media?               @relation(fields: [mediaId], references: [id])
-    mediaId            Int?
+    mediaId            String?
     Post               Post[]
     project_owners     Project?             @relation(fields: [project_owner], references: [id], name: "owners")
-    project_owner      Int?
+    project_owner      String?
     project_upvotes    Project?             @relation(fields: [project_upvote], references: [id], name: "upvotes")
-    project_upvote     Int?
+    project_upvote     String?
     Groups             Groups?              @relation(fields: [groupsId], references: [id])
-    groupsId           Int?
+    groupsId           String?
     Achievement        Achievement?         @relation(fields: [achievementId], references: [id])
-    achievementId      Int?
+    achievementId      String?
     AccountOnCommunity AccountOnCommunity[]
 }
 
 model AccountOnCommunity {
     community   Community @relation(references: [id], fields: [communityId])
-    communityId Int
+    communityId String
     account     Account   @relation(references: [id], fields: [accountId])
-    accountId   Int
+    accountId   String
     assignedAt  DateTime  @default(now())
 
     @@id([communityId, accountId])
 }
 
 model Groups {
-    id            Int       @id @default(autoincrement())
+    id            String    @id @default(cuid())
     description   String
     community     Community @relation(references: [id], fields: [communityId])
-    communityId   Int
+    communityId   String
     media_profile Media?    @relation(references: [id], fields: [profile], name: "profile")
-    profile       Int?
+    profile       String?
     media_banner  Media?    @relation(references: [id], fields: [banner], name: "banner")
-    banner        Int
+    banner        String
     members       Account[]
     createdAt     DateTime  @default(now())
     updatedAt     DateTime  @updatedAt
@@ -148,45 +148,45 @@ model Groups {
 //posting system
 
 model Post_Types {
-    id    Int    @id @default(autoincrement())
+    id    String @id @default(cuid())
     type  String
     posts Post[]
 }
 
 model Reaction {
-    id         Int      @id @default(autoincrement())
+    id         String   @id @default(cuid())
     reaction   String
     affectorId Int
     account    Account  @relation(references: [id], fields: [accountId])
-    accountId  Int
+    accountId  String
     Comment    Comment? @relation(references: [id], fields: [commentId])
-    commentId  Int?
+    commentId  String?
     Post       Post?    @relation(references: [id], fields: [postId])
-    postId     Int?
+    postId     String?
 }
 
 model Comment {
-    id         Int        @id @default(autoincrement())
+    id         String     @id @default(cuid())
     comment    String
     reactions  Reaction[]
     affectorId Int
     account    Account    @relation(references: [id], fields: [accountId])
-    accountId  Int
+    accountId  String
     createdAt  DateTime   @default(now())
     Post       Post?      @relation(fields: [postId], references: [id])
-    postId     Int?
+    postId     String?
 }
 
 model Post {
-    id            Int          @id @default(autoincrement())
+    id            String       @id @default(cuid())
     type          Post_Types   @relation(references: [id], fields: [typeId])
-    typeId        Int
+    typeId        String
     posted        Account      @relation(references: [id], fields: [posted_by])
-    posted_by     Int
+    posted_by     String
     project       Project?     @relation(references: [id], fields: [projectId])
-    projectId     Int?
+    projectId     String?
     achievement   Achievement? @relation(references: [id], fields: [achievementId])
-    achievementId Int?
+    achievementId String?
     reactions     Reaction[]
     comments      Comment[]
     createdAt     DateTime     @default(now())
@@ -194,9 +194,9 @@ model Post {
 }
 
 model Project {
-    id          Int       @id @default(autoincrement())
+    id          String    @id @default(cuid())
     community   Community @relation(references: [id], fields: [communityId])
-    communityId Int
+    communityId String
     description String
     medias      Media[]
     owners      Account[] @relation(name: "owners")
@@ -207,9 +207,9 @@ model Project {
 }
 
 model Achievement {
-    id          Int       @id @default(autoincrement())
+    id          String    @id @default(cuid())
     community   Community @relation(references: [id], fields: [communityId])
-    communityId Int
+    communityId String
     description String
     medias      Media[]
     owners      Account[]
@@ -221,16 +221,16 @@ model Achievement {
 //memories system
 
 model Memory_Types {
-    id       Int      @id @default(autoincrement())
+    id       String   @id @default(cuid())
     type     String
     memories Memory[]
 }
 
 model Memory {
-    id          Int          @id @default(autoincrement())
+    id          String       @id @default(cuid())
     Memory_Type Memory_Types @relation(fields: [memory_Type], references: [id])
-    memory_Type Int
+    memory_Type String
     content     String
     account     Account      @relation(fields: [accountId], references: [id])
-    accountId   Int
+    accountId   String
 }
