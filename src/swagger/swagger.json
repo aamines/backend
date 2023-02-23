@@ -257,12 +257,16 @@
                     "properties": {
                         "email": {
                             "type": "string",
-                            "example": "davidshumbusho10@gmail.com",
+                            "example": "peter@gmail.com",
                             "required": false
                         },
-                        "fullName": {
+                        "names": {
                             "type": "string",
-                            "example": "Byose Dawidi"
+                            "example": "Mfitumukiza Peter"
+                        },
+                        "country": {
+                            "type": "string",
+                            "example": "Rwanda"
                         }
                     }
                 }],

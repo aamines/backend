@@ -65,3 +65,12 @@ module.exports.updateUserService = async(userId, data) => {
     }
 
 }
+
+// get user by email
+export const findUserByEmail = async(email) => {
+    return await prisma.user.findUnique({
+        where:{
+            email
+        }
+    })
+}
