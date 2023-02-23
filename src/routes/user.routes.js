@@ -1,7 +1,7 @@
-import express from 'express';
-import { updateUser } from '../controllers/user/user.controller';
-import { updateUserValidation } from '../middlewares/authValidation';
-import { protect } from '../middlewares/protect';
+const express = required('express');
+const { updateUser } = required('../controllers/user/user.controller');
+const { updateUserValidation } = required('../middlewares/authValidation');
+const { protect } = required('../middlewares/protect');
 const router = express.Router();
 
 // update user info

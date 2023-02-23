@@ -1,7 +1,7 @@
-import Joi from 'joi';
+const Joi = require('joi');
 
 //validating register user
-export const registerValidation = (req, res, next) => {
+module.exports.registerValidation = (req, res, next) => {
     const schema = Joi.object({
         names: Joi.string().min(6).required(),
         email: Joi.string().min(6).required().email(),
@@ -15,7 +15,7 @@ export const registerValidation = (req, res, next) => {
     next();
 }
 //validating login user
-export const loginValidation = (req, res, next) => {
+module.exports.loginValidation = (req, res, next) => {
     const schema = Joi.object({
         email: Joi.string().min(6).required().email(),
         password: Joi.string().min(6).required()
@@ -27,7 +27,7 @@ export const loginValidation = (req, res, next) => {
     next();
 }
 //validate forgot password
-export const forgotPasswordValidation = (req, res, next) => {
+module.exports.forgotPasswordValidation = (req, res, next) => {
     const schema = Joi.object({
         email: Joi.string().min(6).required().email(),
     });
@@ -38,7 +38,7 @@ export const forgotPasswordValidation = (req, res, next) => {
     next();
 }
 //validating reset password
-export const resetPasswordValidation = (req, res, next) => {
+module.exports.resetPasswordValidation = (req, res, next) => {
     const schema = Joi.object({
         email: Joi.string().min(6).required().email(),
         password: Joi.string().min(6).required(),
@@ -51,7 +51,7 @@ export const resetPasswordValidation = (req, res, next) => {
     next();
 }
 //validating reset password
-export const newPasswordValidation = (req, res, next) => {
+module.exports.newPasswordValidation = (req, res, next) => {
     const schema = Joi.object({
         email: Joi.string().min(6).required().email(),
         newPassword: Joi.string().min(6).required(),
@@ -64,7 +64,7 @@ export const newPasswordValidation = (req, res, next) => {
     next();
 }
 //validating update user
-export const updateUserValidation = (req, res, next) => {
+module.exports.updateUserValidation = (req, res, next) => {
     const schema = Joi.object({
         names: Joi.string().min(6),
         country: Joi.string().min(6),
@@ -77,7 +77,7 @@ export const updateUserValidation = (req, res, next) => {
     next();
 }
 //validating verify email
-export const verifyEmailValidation = async(req, res, next) => {
+module.exports.verifyEmailValidation = async(req, res, next) => {
     const schema = Joi.object({
         email: Joi.string().min(6).email().required(),
         code: Joi.string().required().min(5)

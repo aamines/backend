@@ -1,9 +1,9 @@
-import express from "express";
-import { changePasswordController, forgotPasswordController, getUserDetails, loginController, register, 
-    resetPasswordController, verifyEmailController } from "../controllers/auth/auth.controller.js";
-import { forgotPasswordValidation, loginValidation, newPasswordValidation, 
-    registerValidation, resetPasswordValidation, verifyEmailValidation } from "../middlewares/authValidation.js";
-import { protect } from "../middlewares/protect.js";
+const express = require("express")
+const { changePasswordController, forgotPasswordController, getUserDetails, loginController, register, 
+    resetPasswordController, verifyEmailController } = require("../controllers/auth/auth.controller.js")
+const { forgotPasswordValidation, loginValidation, newPasswordValidation, 
+    registerValidation, resetPasswordValidation, verifyEmailValidation } = require("../middlewares/authValidation.js")
+const { protect } = require("../middlewares/protect.js")
 
 const router = express.Router();
 
@@ -28,4 +28,4 @@ router.put("/change-password", newPasswordValidation, changePasswordController);
 // Get user details
 router.get("/user-details", protect, getUserDetails);
 
-export default router;
+module.exports = router;

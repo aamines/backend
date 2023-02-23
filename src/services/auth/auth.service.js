@@ -1,12 +1,12 @@
-import { PrismaClient } from '@prisma/client';
-import jwt from 'jsonwebtoken';
-import lodash from 'lodash';
-import generateRandomAlphaNumericCode from '../../utils/random.js';
-import { hashPassword, comparePassword } from './password.service.js';
-import sendEmail from '../../utils/sendEmail.js';
+const { PrismaClient } = require('@prisma/client')
+const jwt = require('jsonwebtoken')
+const lodash = require('lodash')
+const generateRandomAlphaNumericCode = require('../../utils/random.js')
+const { hashPassword, comparePassword } = require('./password.service.js')
+const sendEmail = require('../../utils/sendEmail.js')
 
 // create user
-export const createUser  = async (data) => {
+module.exports.createUser  = async (data) => {
     const prisma =  new PrismaClient();
     const user = await findUserByEmail(data.email);
     if(user){
@@ -22,7 +22,7 @@ export const createUser  = async (data) => {
             password: hashedPassowrd,
             country: data.country,
             emailVerificationCode: code,
-            emailVerificationCodeExpiresAt: (Date.now()) + (20 * 60 * 1000)
+            emailVerificationCodeExpiresAt: (Date.now()) + (24 * 60 * 60 * 1000)
         }
     })
 
@@ -32,15 +32,15 @@ export const createUser  = async (data) => {
             subject: 'Projectia - Email Verification',
             from: `${process.env.EMAIL_USER}`,
             text: `
-                  <h2>Confirm your email address</h2>
-                  <h2>Your confirmation code is below — enter it in your open browser window and we'll help you get signed in.</h2>
-                  <h3>This code will expire in 20 minutes</h3>
-                  <br>
-                  <h2>${code}</h2>
-                  <br>
-                  <h3>If you didn’t request this email, there’s nothing to worry about — you can safely ignore it.</h3>
-                  <h3>Thanks for using Projectia</h3>
-                  `
+                <p>Confirm your email address</p>
+                <p>Your confirmation code is below — enter it in your open browser window and we'll help you get signed in.</p>
+                <br>
+                <p>${code}</p>
+                <br>
+                <p>This code will expire in 24 hours</p>
+                <p>If you didn’t request this email, there’s nothing to worry about — you can safely ignore it.</p>
+                <p>Thanks for using Projectia</p>
+                `
         });
         return `check ${newUser.email} for verification code`;
     }
@@ -48,7 +48,7 @@ export const createUser  = async (data) => {
 }
 
 // verify email
-export const verifyEmail = async (email, code) => {
+module.exports.verifyEmail = async (email, code) => {
     const prisma = new PrismaClient()
     const user = await findUserByEmail(email)
     if (user != null) {
@@ -74,7 +74,7 @@ export const verifyEmail = async (email, code) => {
 }
 
 //login user
-export const login = async (email, password) => {
+module.exports.login = async (email, password) => {
     const user = await findUserByEmail(email);
     if (user != null) {
         if (user.emailVerified) {
@@ -91,7 +91,7 @@ export const login = async (email, password) => {
     return "Invalid email or password";
 }
 //forgot password
-export const forgotPassword = async (email) => {
+module.exports.forgotPassword = async (email) => {
     const prisma = new PrismaClient()
     const user = await findUserByEmail(email)
     if (user != null) {
@@ -102,22 +102,22 @@ export const forgotPassword = async (email) => {
             },
             data: {
                 resetPasswordCode: code,
-                resetPasswordCodeExpiresAt: (Date.now()) + (10 * 60 * 1000)
+                resetPasswordCodeExpiresAt: (Date.now()) + (24 * 60 * 60 * 1000)
             }
         })
         sendEMail({
             to: email,
             subject: 'Projectia - Password Reset',
-            from: `${process.env.EMAIL_USER}`,
+            from:`${process.env.EMAIL_USER}`,
             text: `
-            <h1>Reset your password</h1>
-            <h2>Your confirmation code is below — enter it in your open browser window and we'll help you get signed in.</h2>
-            <h2>This code will expire in 10 minutes</h2>
+            <p>Reset your password</p>
+            <p>Your confirmation code is below — enter it in your open browser window and we'll help you get signed in.</p>
             <br>
-            <h1>${code}</h1>
+            <p>${code}</p>
             <br>
-            <h3>If you didn’t request this email, there’s nothing to worry about — you can safely ignore it.</h3>
-            <h3>Thanks for using Projectia</h3>
+            <p>This code will expire in 24 hours</p>
+            <p>If you didn’t request this email, there’s nothing to worry about — you can safely ignore it.</p>
+            <p>Thanks for using Projectia</p>
             `
         });
         return `check your email ${email} for password reset code`;
@@ -125,7 +125,7 @@ export const forgotPassword = async (email) => {
     return "user not found";
 }
 //reset password
-export const resetPassword = async (email, code, password) => {
+module.exports.resetPassword = async (email, code, password) => {
     const prisma = new PrismaClient()
     const user = await findUserByEmail(email)
     if (user != null) {
@@ -151,7 +151,7 @@ export const resetPassword = async (email, code, password) => {
     return "user not found";
 }
 //change password
-export const changePassword = async (email, oldPassword, newPassword) => {
+module.exports.changePassword = async (email, oldPassword, newPassword) => {
     const prisma = new PrismaClient()
     const user = await findUserByEmail(email)
     if (user != null) {
@@ -174,7 +174,7 @@ export const changePassword = async (email, oldPassword, newPassword) => {
     return "user not found";
 }
 //get current logged in user info
-export const getUserById = async (id) => {
+module.exports.getUserById = async (id) => {
     const prisma = new PrismaClient()
     const user = await prisma.user.findUnique({
         where: {
@@ -185,7 +185,7 @@ export const getUserById = async (id) => {
 }
 
 // find user by email
-export const findUserByEmail = async (email) => {
+const findUserByEmail = async (email) => {
     const prisma = new PrismaClient();
     const user = await prisma.user.findUnique({
         where: {

@@ -7,4 +7,5 @@ function generateRandomAlphaNumericCode() {
     }
     return code;
 }
-export default generateRandomAlphaNumericCode;
+
+module.exports =  generateRandomAlphaNumericCode;

@@ -1,4 +1,4 @@
-import express from "express";
+const express = require("express");
 
 //importing the account controller
 
@@ -6,4 +6,4 @@ const router = express.Router();
 
 //implementing account routes
 
-export default router;
+module.exports = router;

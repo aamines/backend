@@ -1,8 +1,8 @@
-import { changePassword, createUser, forgotPassword, 
-    getUserById, login, resetPassword, verifyEmail } from "../../services/auth/auth.service.js"
+const { changePassword, createUser, forgotPassword, 
+    getUserById, login, resetPassword, verifyEmail } = require("../../services/auth/auth.service.js");
 
 // Create a new user
-export const register = async (req,res) => {
+module.exports.register = async (req,res) => {
     try {
         const data = req.body;
         const result = await createUser(data);
@@ -14,7 +14,7 @@ export const register = async (req,res) => {
 }
 
 // Verify Email 
-export const verifyEmailController = async (req,res) => {
+module.exports.verifyEmailController = async (req,res) => {
     try {
         const { email, code } = req.body;
         const result = await verifyEmail(email, code);
@@ -26,7 +26,7 @@ export const verifyEmailController = async (req,res) => {
 }
 
 // Login
-export const loginController = async (req,res) => {
+module.exports.loginController = async (req,res) => {
     try {
         const { email, password } = req.body;
         const result  = await login(email, password);
@@ -38,7 +38,7 @@ export const loginController = async (req,res) => {
 }
 
 // Get info of the logged in user
-export const getUserDetails = async(req,res) => {
+module.exports.getUserDetails = async(req,res) => {
     try {
         const result = await getUserById(req.user.id);
         res.status(200).json(result);
@@ -49,7 +49,7 @@ export const getUserDetails = async(req,res) => {
 }
 
 // Forgot password
-export const forgotPasswordController = async(req,res) => {
+module.exports.forgotPasswordController = async(req,res) => {
     try {
         const email = req.body.email;
         result = await forgotPassword(email);
@@ -61,7 +61,7 @@ export const forgotPasswordController = async(req,res) => {
 }
 
 // Reset password
-export const resetPasswordController = async(req,res) => {
+module.exports.resetPasswordController = async(req,res) => {
     try {
         const { email, code, password } = req.body;
         const result = await resetPassword(email, code, password);
@@ -73,7 +73,7 @@ export const resetPasswordController = async(req,res) => {
 }
 
 // Change password
-export const changePasswordController = async(req,res) => {
+module.exports.changePasswordController = async(req,res) => {
     try {
         const { email, oldPassword, newPassword } = req.body;
         const result = await changePassword(email, oldPassword, newPassword);

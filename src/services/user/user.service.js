@@ -1,9 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
-
-// Update user info
-export const updateUserService = async(userId, data) => {
+module.exports.updateUserService = async(userId, data) => {
+    const prisma = new PrismaClient();
     const existingUser = await prisma.user.findUnique({
         where:{
             id: userId
