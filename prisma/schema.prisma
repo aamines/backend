@@ -37,7 +37,7 @@ model Media_type {
 //user system
 
 model Status {
-    id          String      @id @default(cuid())
+    id          Int      @id @default(autoincrement())
     status      String
     accounts    Account[]
     communities Community[]
@@ -45,7 +45,7 @@ model Status {
 }
 
 model Role {
-    id       String    @id @default(cuid())
+    id       Int    @id @default(autoincrement())
     role     String
     accounts Account[]
 }
@@ -64,7 +64,7 @@ model User {
     createdAt                      DateTime    @default(now())
     updatedAt                      DateTime    @updatedAt
     status                         Status      @relation(fields: [statusId], references: [id])
-    statusId                       String
+    statusId                       Int         @default(1)
     accounts                       Account[]
     Community                      Community[]
 }
@@ -73,7 +73,7 @@ model Community {
     id          String               @id @default(cuid())
     name        String
     status      Status               @relation(references: [id], fields: [statusId])
-    statusId    String
+    statusId    Int                  @default(1)
     description String
     media       Media?               @relation(references: [id], fields: [profile])
     profile     String?
@@ -93,9 +93,9 @@ model Account {
     user               User                 @relation(references: [id], fields: [userId])
     userId             String
     status             Status               @relation(references: [id], fields: [statusId])
-    statusId           String
+    statusId           Int                  @default(1)
     role               Role                 @relation(references: [id], fields: [roleId])
-    roleId             String
+    roleId             Int                  @default(3)
     Community          Community            @relation(fields: [communityId], references: [id])
     communityId        String
     media_profile      Media?               @relation(references: [id], fields: [profile], name: "profile")

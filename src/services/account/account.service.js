@@ -1,80 +1,35 @@
-import { PrismaClient } from "@prisma/client";
-import { findCommunitById } from "../community/community.service";
+const PrismaClient = require("@prisma/client");
 
+//configs
 const prisma = new PrismaClient();
 
 //create account
-export const createAccount = async(userId, communityId) => {
-  const newAccount = prisma.account.create({
-    data:{
-      userId,
-      communityId
-    }
-  })
-  if(!newAccount){
-    return "could not create a new account"; 
-  }
-  return newAccount;
+module.exports.createAccount = (user) => {
+  return new Promise(async (resolve, reject) => {
+    await prisma.account
+      .create({
+        data: {
+          userId: user.id,
+          roleId: 2,
+          statusId: 1,
+        },
+      })
+      .then((account) => {
+        resolve(account);
+      })
+      .catch((error) => {
+        reject(error.message);
+      });
+  });
 };
 
-//create admin account
-export const createAdminAccount = async(userId, communityId) => {
-  const newAccount = prisma.account.create({
-    data:{
-      userId,
-      communityId,
-      roleId: 1,
-    }
-  })
-  if(!newAccount){
-    return "could not create a new account"; 
-  }
-  return newAccount;
-};
-
-// Get Accounts by userId
-export const getAccountsByUser = async(userId) => {
-  const accounts  = await prisma.account.findMany({
-    where:{
-      userId: userId
-    }
-  });
-  if(!accounts){
-    return "no accounts found";
-  }
-  return accounts;
-}
-
-// delete account
-export const deleteAccount = async(userEmail, communityId) => {
-  const community = await findCommunitById(communityId);
-  if(!community){
-      return "There is no community with such id";
-  }
-  const userAccount = await prisma.account.findUnique({
-      where:{
-          userId: existingUser.id,
-          communityId: communityId
-      }
-  });
-  if(!userAccount){
-      return `User with email ${userEmail} does not exist in the community`;
-  }
-  await prisma.account.delete({
-      where:{
-          id: userAccount.id
-      }
-  })
-  return `Account deleted successfully`;
-}
-
-//delete accounts by userId
-export const deleteAccountsByUserId = (userId) => {
+//delete accounts
+module.exports.deleteAccounts = (id) => {
   return new Promise((resolve, reject) => {
     prisma.account
       .deleteMany({
         where: {
-          userId
+          userId: id,
         },
       })
       .then((result) => {
