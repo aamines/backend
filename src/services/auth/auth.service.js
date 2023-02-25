@@ -190,7 +190,7 @@ const findUserByEmail = async (email) => {
     const prisma = new PrismaClient();
     const user = await prisma.user.findUnique({
         where: {
-            email
+            email: email
         }
     });
     if(user){
