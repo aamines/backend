@@ -8,7 +8,11 @@ const sendEmail = require('../../utils/sendEmail.js')
 // create user
 module.exports.createUser  = async (data) => {
     const prisma =  new PrismaClient();
-    const user = await findUserByEmail(data.email);
+    const user = await prisma.user.findUnique({
+        where:{
+            email: data.email
+        }
+    });
     if(user){
         return "Email already used";
     }
