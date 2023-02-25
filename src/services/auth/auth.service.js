@@ -22,7 +22,8 @@ module.exports.createUser  = async (data) => {
             password: hashedPassowrd,
             country: data.country,
             emailVerificationCode: code,
-            emailVerificationCodeExpiresAt: (Date.now()) + (24 * 60 * 60 * 1000)
+            emailVerificationCodeExpiresAt: (Date.now()) + (24 * 60 * 60 * 1000),
+            statusId: 1
         }
     })
 
