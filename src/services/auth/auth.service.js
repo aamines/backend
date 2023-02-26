@@ -6,21 +6,21 @@ const { hashPassword, comparePassword } = require('./password.service.js')
 const sendEmail = require('../../utils/sendEmail.js')
 
 // create user
-module.exports.createUser  = async (data) => {
-    const prisma =  new PrismaClient();
+module.exports.createUser = async (data) => {
+    const prisma = new PrismaClient();
     const user = await prisma.user.findUnique({
-        where:{
+        where: {
             email: data.email
         }
     });
-    if(user){
+    if (user) {
         return "Email already used";
     }
     const hashedPassowrd = await hashPassword(data.password);
-    const code  = generateRandomAlphaNumericCode().toUpperCase();
+    const code = generateRandomAlphaNumericCode().toUpperCase();
 
     const newUser = await prisma.user.create({
-        data:{
+        data: {
             names: data.names,
             email: data.email,
             password: hashedPassowrd,
@@ -81,19 +81,23 @@ module.exports.verifyEmail = async (email, code) => {
 //login user
 module.exports.login = async (email, password) => {
     const user = await findUserByEmail(email);
-    if (user != null) {
-        if (user.emailVerified) {
-            //compare password
-            const passMatch = await comparePassword(password, user.password)
-            if (passMatch) {
-                const token = await generateToken(user);
-                return token;
-            }
-            return "invalid email or password";
-        }
-        return "email not verified";
+
+    if (!user || user === null) {
+        return "Invalid email or password."
     }
-    return "Invalid email or password";
+
+    if (!user.emailVerified) {
+        return "Email not verified. Please Verify it and try again!!"
+    }
+
+    //compare password
+    const passMatch = await comparePassword(password, user.password)
+    if (!passMatch) {
+        return "invalid email or password";
+    }
+    
+    const token = await generateToken(user);
+    return token;
 }
 //forgot password
 module.exports.forgotPassword = async (email) => {
@@ -113,7 +117,7 @@ module.exports.forgotPassword = async (email) => {
         sendEMail({
             to: email,
             subject: 'Projectia - Password Reset',
-            from:`${process.env.EMAIL_USER}`,
+            from: `${process.env.EMAIL_USER}`,
             text: `
             <p>Reset your password</p>
             <p>Your confirmation code is below — enter it in your open browser window and we'll help you get signed in.</p>
@@ -197,15 +201,16 @@ const findUserByEmail = async (email) => {
             email: email
         }
     });
-    if(user){
+    if (user) {
         return user;
-    }else{
+    } else {
         return null;
-    } 
+    }
 }
 
 //generate access token
 async function generateToken(user) {
+    console.log(user.id)
     const payload = {
         id: user.id
     }
