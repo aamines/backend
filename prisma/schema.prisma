@@ -10,7 +10,7 @@ datasource db {
 //media system
 
 model Media {
-    id               String       @id @default(cuid())
+    id               String       @id @default(uuid())
     media_type       Media_type   @relation(fields: [media_typeId], references: [id])
     media_typeId     String
     media_url        String
@@ -29,7 +29,7 @@ model Media {
 }
 
 model Media_type {
-    id         String  @id @default(cuid())
+    id         String  @id @default(uuid())
     media_type String
     Media      Media[]
 }
@@ -51,7 +51,7 @@ model Role {
 }
 
 model User {
-    id                             String      @id @default(cuid())
+    id                             String      @id @default(uuid())
     names                          String
     email                          String      @unique
     password                       String
@@ -70,7 +70,7 @@ model User {
 }
 
 model Community {
-    id          String               @id @default(cuid())
+    id          String               @id @default(uuid())
     name        String
     status      Status               @relation(references: [id], fields: [statusId])
     statusId    Int                  @default(1)
@@ -89,7 +89,7 @@ model Community {
 }
 
 model Account {
-    id                 String               @id @default(cuid())
+    id                 String               @id @default(uuid())
     user               User                 @relation(references: [id], fields: [userId])
     userId             String
     status             Status               @relation(references: [id], fields: [statusId])
@@ -132,7 +132,7 @@ model AccountOnCommunity {
 }
 
 model Groups {
-    id            String    @id @default(cuid())
+    id            String    @id @default(uuid())
     description   String
     community     Community @relation(references: [id], fields: [communityId])
     communityId   String
@@ -148,13 +148,13 @@ model Groups {
 //posting system
 
 model Post_Types {
-    id    String @id @default(cuid())
+    id    String @id @default(uuid())
     type  String
     posts Post[]
 }
 
 model Reaction {
-    id         String   @id @default(cuid())
+    id         String   @id @default(uuid())
     reaction   String
     affectorId Int
     account    Account  @relation(references: [id], fields: [accountId])
@@ -166,7 +166,7 @@ model Reaction {
 }
 
 model Comment {
-    id         String     @id @default(cuid())
+    id         String     @id @default(uuid())
     comment    String
     reactions  Reaction[]
     affectorId Int
@@ -178,7 +178,7 @@ model Comment {
 }
 
 model Post {
-    id            String       @id @default(cuid())
+    id            String       @id @default(uuid())
     type          Post_Types   @relation(references: [id], fields: [typeId])
     typeId        String
     posted        Account      @relation(references: [id], fields: [posted_by])
@@ -194,7 +194,7 @@ model Post {
 }
 
 model Project {
-    id          String    @id @default(cuid())
+    id          String    @id @default(uuid())
     community   Community @relation(references: [id], fields: [communityId])
     communityId String
     description String
@@ -207,7 +207,7 @@ model Project {
 }
 
 model Achievement {
-    id          String    @id @default(cuid())
+    id          String    @id @default(uuid())
     community   Community @relation(references: [id], fields: [communityId])
     communityId String
     description String
@@ -221,13 +221,13 @@ model Achievement {
 //memories system
 
 model Memory_Types {
-    id       String   @id @default(cuid())
+    id       String   @id @default(uuid())
     type     String
     memories Memory[]
 }
 
 model Memory {
-    id          String       @id @default(cuid())
+    id          String       @id @default(uuid())
     Memory_Type Memory_Types @relation(fields: [memory_Type], references: [id])
     memory_Type String
     content     String
