@@ -6,8 +6,8 @@ const { hashPassword, comparePassword } = require('./password.service.js')
 const sendEmail = require('../../utils/sendEmail.js')
 
 // create user
+const prisma = new PrismaClient();
 module.exports.createUser = async (data) => {
-    const prisma = new PrismaClient();
     const user = await prisma.user.findUnique({
         where: {
             email: data.email
