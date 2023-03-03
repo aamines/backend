@@ -5,8 +5,9 @@ const express = require("express");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocs = require("./swagger/swagger.json");
 
-//consting routes
+//routes
 const authRoutes = require("./routes/auth.routes.js");
+const userRoutes = require("./routes/user.routes.js");
 const postRoutes = require("./routes/posts.routes.js");
 const storyRoutes = require("../src/routes/story.routes");
 
@@ -20,7 +21,7 @@ app.set("view engine", "pug");
 app.set("views", "./views");
 
 //middlewares
-// app.use(logger("dev"));
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -32,8 +33,8 @@ app.use(
 );
 
 //endpoints
-
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/post", postRoutes);
 app.use("/api/v1/story", storyRoutes);
 
