@@ -1,11 +1,11 @@
 const express = require("express");
 
 //controllers
-const { updateUser } = require("../controllers/user/user.controller");
+const { updateUser } = require("../controllers/user.controller");
 
 //middlewares
-const { protect } = require("../middlewares/protect");
-const { updateUserValidation } = require("../middlewares/authValidation");
+const { protect } = require("../middlewares/protect.middleware");
+const { updateUserValidation } = require("../middlewares/auth.middleware");
 
 const router = express.Router();
 
