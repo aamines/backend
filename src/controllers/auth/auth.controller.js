@@ -2,21 +2,34 @@ const {
   changePassword,
   createUser,
   forgotPassword,
-  getUserById,
   login,
   resetPassword,
   verifyEmail,
-} = require("../../services/auth/auth.service.js");
+} = require("../../services/auth/auth.service");
 
 // Create a new user
-module.exports.register = async (req, res) => {
+module.exports.registerController = async (req, res) => {
+  const data = {
+    names: req.body.names,
+    email: req.body.email,
+    country: req.body.country,
+    password: req.body.password,
+  };
+
   try {
-    const data = req.body;
-    const result = await createUser(data);
-    res.status(201).json(result);
+    await createUser(data)
+      .then((message) => {
+        return res.status(200).json({
+          message: message,
+        });
+      })
+      .catch((err) => {
+        throw new Error(err.message);
+      });
   } catch (error) {
-    console.log(error);
-    res.status(500).json(error);
+    return res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
@@ -24,11 +37,19 @@ module.exports.register = async (req, res) => {
 module.exports.verifyEmailController = async (req, res) => {
   try {
     const { email, code } = req.body;
-    const result = await verifyEmail(email, code);
-    res.status(200).json(result);
+    await verifyEmail(email, code)
+      .then((message) => {
+        return res.status(200).json({
+          message: message,
+        });
+      })
+      .catch((error) => {
+        throw new Error(error.message);
+      });
   } catch (error) {
-    console.log(error);
-    res.status(500).json(error);
+    return res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
@@ -36,34 +57,40 @@ module.exports.verifyEmailController = async (req, res) => {
 module.exports.loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const result = await login(email, password);
-    res.status(200).json(result);
+    await login(email, password)
+      .then((token) => {
+        return res.status(200).json({
+          message: "Login successful",
+          token: token,
+        });
+      })
+      .catch((error) => {
+        throw new Error(error.message);
+      });
   } catch (error) {
-    console.log(error);
-    res.status(500).json(error);
-  }
-};
-
-// Get info of the logged in user
-module.exports.getUserDetails = async (req, res) => {
-  try {
-    const result = await getUserById(req.user.id);
-    res.status(200).json(result);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json(error);
+    return res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
 // Forgot password
 module.exports.forgotPasswordController = async (req, res) => {
   try {
-    const email = req.body.email;
-    result = await forgotPassword(email);
-    res.status(200).json(result);
+    const { email } = req.body;
+    await forgotPassword(email)
+      .then((message) => {
+        return res.status(200).json({
+          message: message,
+        });
+      })
+      .catch((error) => {
+        throw new Error(error.message);
+      });
   } catch (error) {
-    console.log(error);
-    res.status.json(error);
+    return res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
@@ -71,11 +98,19 @@ module.exports.forgotPasswordController = async (req, res) => {
 module.exports.resetPasswordController = async (req, res) => {
   try {
     const { email, code, password } = req.body;
-    const result = await resetPassword(email, code, password);
-    res.status(200).json(result);
+    await resetPassword(email, code, password)
+      .then((message) => {
+        return res.status(200).json({
+          message: message,
+        });
+      })
+      .catch((error) => {
+        throw new Error(error.message);
+      });
   } catch (error) {
-    console.log(error);
-    res.status.json(error);
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
@@ -83,10 +118,18 @@ module.exports.resetPasswordController = async (req, res) => {
 module.exports.changePasswordController = async (req, res) => {
   try {
     const { email, oldPassword, newPassword } = req.body;
-    const result = await changePassword(email, oldPassword, newPassword);
-    res.status(200).json(result);
+    await changePassword(email, oldPassword, newPassword)
+      .then((message) => {
+        return res.status(200).json({
+          message: message,
+        });
+      })
+      .catch((error) => {
+        throw new Error(error.message);
+      });
   } catch (error) {
-    console.log(error);
-    res.status.json(error);
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };

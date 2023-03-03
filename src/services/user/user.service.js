@@ -1,76 +1,110 @@
-import { PrismaClient } from "@prisma/client";
+const lodash = require("lodash");
+const { convert } = require("html-to-text");
+const { PrismaClient } = require("@prisma/client");
 
-module.exports.updateUserService = async(userId, data) => {
-    const prisma = new PrismaClient();
+//utils
+const { generateRandomAlphaNumericCode } = require("../../utils/auth.util");
+
+//prisma client
+const prisma = new PrismaClient();
+
+module.exports.updateUser = async (userId, data) => {
+  try {
     const existingUser = await prisma.user.findUnique({
-        where:{
-            id: userId
-        }
-    })
-    if(!existingUser){
-        return "user does not exist";
-    }
-    if (existingUser.email != data.email) {
-        //update user and send email verification for new email
-
-        //generating code
+      where: {
+        id: userId,
+      },
+    });
+    if (!existingUser) {
+      throw new Error("user not found");
+    } else {
+      if (existingUser.email != data.email) {
         const code = generateRandomAlphaNumericCode();
-        const updatedUser = await prisma.user.update({
+        await prisma.user
+          .update({
             where: {
-                id
+              id,
             },
             data: {
-                names: data.names || existingUser.names,
-                email: data.email,
-                country: data.country || existingUser.country,
-                emailVerificationCode: code,
-                emailVerified: false,
-                emailVerificationCodeExpiresAt: (Date.now()) + (10 * 60 * 1000)
-            }
-        })
-        if (updatedUser) {
+              email: data.email,
+              emailVerified: false,
+              emailVerificationCode: code,
+              names: data.names || existingUser.names,
+              country: data.country || existingUser.country,
+              emailVerificationCodeExpiresAt: Date.now() + 10 * 60 * 1000,
+            },
+          })
+          .then((res) => {
+            //send email
+            const html = pug.renderFile(
+              `${__dirname}/../../views/emails/verification.pug`,
+              {
+                code: code,
+              }
+            );
             sendEMail({
-                to: data.email,
-                subject: 'Projectia - Email Verification',
-                from: `${process.env.EMAIL_USER}`,
-                text: `
-              <h1>Confirm your email address</h1>
-              <h2>Your confirmation code is below — enter it in your open browser window and we'll help you get signed in.</h2>
-              <h2>This code will expire in 10 minutes</h2>
-              <br>
-              <h1>${code}</h1>
-              <br>
-              <h3>If you didn’t request this email, there’s nothing to worry about — you can safely ignore it.</h3>
-              <h3>Thanks for using Projectia</h3>
-              `
+              to: data.email,
+              subject: "Projectia - Email Verification",
+              from: `${process.env.EMAIL_USER}`,
+              text: convert(html),
             });
-            return `check ${data.email} for verification code`;
-        }
-    }else {
+            return new Promise((resolve, reject) => {
+              resolve(`check ${data.email} for verification code`);
+            });
+          });
+      } else {
         //update user if email is not changed
-        const updatedUser = await prisma.user.update({
+        await prisma.user
+          .update({
             where: {
-                id
+              id,
             },
             data: {
-                names: data.names || existingUser.names,
-                country: data.country || existingUser.country
-            }
-        })
-        if (updatedUser) {
-            //return user without password using lodash
-            console.log(updatedUser);
-            return updatedUser;
-        }
+              names: data.names || existingUser.names,
+              country: data.country || existingUser.country,
+            },
+          })
+          .then(() => {
+            return new Promise((resolve, reject) => {
+              resolve(`user updated`);
+            });
+          });
+      }
     }
+  } catch (error) {
+    return new Promise((resolve, reject) => {
+      reject(error);
+    });
+  }
+};
 
-}
+//get current logged in user info
+module.exports.getUserById = async (id) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+  return lodash.pick(user, [
+    "id",
+    "names",
+    "email",
+    "country",
+    "createdAt",
+    "updatedAt",
+  ]);
+};
 
-// get user by email
-export const findUserByEmail = async(email) => {
-    return await prisma.user.findUnique({
-        where:{
-            email
-        }
-    })
-}
+// find user by email
+module.exports.findUserByEmail = async (email) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      email: email,
+    },
+  });
+  if (user) {
+    return user;
+  } else {
+    return null;
+  }
+};
