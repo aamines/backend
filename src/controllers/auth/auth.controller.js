@@ -1,3 +1,4 @@
+//services
 const {
   changePassword,
   createUser,
@@ -6,6 +7,12 @@ const {
   resetPassword,
   verifyEmail,
 } = require("../../services/auth/auth.service");
+
+//utils
+const {
+  verifyUserSignupPayload,
+  verifyUserLoginPayload,
+} = require("../../utils/auth.util");
 
 // Create a new user
 module.exports.registerController = async (req, res) => {
@@ -17,15 +24,20 @@ module.exports.registerController = async (req, res) => {
   };
 
   try {
-    await createUser(data)
-      .then((message) => {
-        return res.status(200).json({
-          message: message,
+    const { error } = await verifyUserSignupPayload(data);
+    if (error) {
+      throw new Error(error.details[0].message);
+    } else {
+      await createUser(data)
+        .then((message) => {
+          return res.status(200).json({
+            message: message,
+          });
+        })
+        .catch((err) => {
+          throw new Error(err.message);
         });
-      })
-      .catch((err) => {
-        throw new Error(err.message);
-      });
+    }
   } catch (error) {
     return res.status(500).json({
       message: error.message,
@@ -36,16 +48,21 @@ module.exports.registerController = async (req, res) => {
 // Verify Email
 module.exports.verifyEmailController = async (req, res) => {
   try {
-    const { email, code } = req.body;
-    await verifyEmail(email, code)
-      .then((message) => {
-        return res.status(200).json({
-          message: message,
+    const { error } = await verifyUserLoginPayload(req.body);
+    if (error) {
+      throw new Error(error.details[0].message);
+    } else {
+      const { email, code } = req.body;
+      await verifyEmail(email, code)
+        .then((message) => {
+          return res.status(200).json({
+            message: message,
+          });
+        })
+        .catch((error) => {
+          throw new Error(error.message);
         });
-      })
-      .catch((error) => {
-        throw new Error(error.message);
-      });
+    }
   } catch (error) {
     return res.status(500).json({
       message: error.message,

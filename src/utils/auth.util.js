@@ -1,3 +1,4 @@
+const joi = require("joi");
 const jwt = require("jsonwebtoken");
 
 module.exports.generateRandomAlphaNumericCode = () => {
@@ -20,4 +21,24 @@ module.exports.generateToken = async (user) => {
     expiresIn: "1d",
   });
   return token;
+};
+
+//verify user signup payload
+module.exports.verifyUserSignupPayload = async (payload) => {
+  const schema = joi.object({
+    names: joi.string().min(5).max(50).required(),
+    email: joi.string().min(10).max(60).email().required(),
+    country: joi.string().min(2).max(15).required(),
+    password: joi.string().min(8).max(15).required(),
+  });
+  return schema.validate(payload);
+};
+
+//verify user login payload
+module.exports.verifyUserLoginPayload = async (payload) => {
+  const schema = joi.object({
+    email: joi.string().min(10).max(60).email().required(),
+    password: joi.string().min(8).max(15).required(),
+  });
+  return schema.validate(payload);
 };
