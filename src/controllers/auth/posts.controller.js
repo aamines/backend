@@ -7,7 +7,8 @@ module.exports.createPost=async (req,res)=>{
             typeId:req.body.typeId,
             postedBy:req.body.accountId,
             projectId:req.params.projectId,
-            achievementId:req.body.achievementId        
+            achievementId:req.body.achievementId,
+            communityId:req.body.communityId        
         })
     }
     catch(error){
@@ -18,7 +19,7 @@ module.exports.createPost=async (req,res)=>{
 
 module.exports.loadPosts=async (req,res)=>{
     try{
-        let posts=await prisma.post.findAll()
+        let posts=await prisma.post.findAll({where:{communityId:req.body.communityId}})
         res.status(200).send(posts)
     }
     catch(error){

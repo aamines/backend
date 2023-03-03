@@ -478,6 +478,29 @@
                     "in":"body",
                     "name":"body"
                 }]
+        },
+        "/api/v1/community/new":{
+            "summary":"create new community",
+            "consumes":["application/json"],
+            "produces":["application/json"],
+            "parameters":[{
+                "in":"body",
+                    "name":"body",
+                    "properties":{
+                        "communityName":{
+                            "type":"string",
+                            "required":true
+                        },
+                        "communityVision":{
+                            "type":"string",
+                            "required":true
+                        },
+                        "termsAndConditions":{
+                            "type":"string",
+                            "required":true
+                        }
+                    }
+            }]
         }
         
         

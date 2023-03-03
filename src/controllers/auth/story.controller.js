@@ -1,7 +1,7 @@
 const { PrismaClient }=require("@prisma/client");
 const prisma=new PrismaClient()
 
-export const createStory=async (req,res)=>{
+module.exports.createStory=async (req,res)=>{
     try{
             await prisma.story.create({
             typeId:req.body.typeId,
@@ -15,16 +15,17 @@ export const createStory=async (req,res)=>{
     }
 }
 
-export const loadStory=async (req,res)=>{
+module.exports.loadStory=async (req,res)=>{
     try{
-        let posts=await prisma.story.findAll()
+        let posts=await prisma.story.findAll({where:{communityId:req.body.communityId}})
         res.status(200).send(posts)
     }
     catch(error){
         res.status(500).send("no posts found")
     }
 }
-export const loadWithStoryId=async(req,res)=>{
+
+module.exports.loadWithStoryId=async(req,res)=>{
     try{
         const story=await prisma.story.find({where:{storyId:req.body.storyId}})
         res.status(200).send(story)
