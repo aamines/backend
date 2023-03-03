@@ -1,9 +1,12 @@
-const story=require("../controllers/auth/story.controller.js")
-const router=require("express").Router()
+const express = require("express");
 
-router.get("/all",story.loadStory)
-router.post("/new",story.createStory)
-router.get("/story/id",story.loadWithStoryId)
+//controllers
+const story = require("../controllers/story.controller");
 
+const router = express.Router();
 
-module.exports=router
+router.post("/new", story.createStory);
+router.get("/all", story.loadStory);
+router.get("/story/id", story.loadWithStoryId);
+
+module.exports = router;

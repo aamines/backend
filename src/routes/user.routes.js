@@ -1,10 +1,15 @@
-const express = required('express');
-const { updateUser } = required('../controllers/user/user.controller');
-const { updateUserValidation } = required('../middlewares/authValidation');
-const { protect } = required('../middlewares/protect');
+const express = require("express");
+
+//controllers
+const { updateUser } = require("../controllers/user.controller");
+
+//middlewares
+const { protect } = require("../middlewares/protect.middleware");
+const { updateUserValidation } = require("../middlewares/auth.middleware");
+
 const router = express.Router();
 
-// update user info
+//routes
 router.put("/update-user", protect, updateUserValidation, updateUser);
 
-export default router;
+module.exports = router;
