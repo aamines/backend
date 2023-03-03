@@ -3,14 +3,14 @@ const { convert } = require("html-to-text");
 const { PrismaClient } = require("@prisma/client");
 
 //configs
-const sendEmail = require("../../utils/email.util");
+const sendEmail = require("../utils/email.util");
 const {
   generateRandomAlphaNumericCode,
   generateToken,
-} = require("../../utils/auth.util");
+} = require("../utils/auth.util");
 
 //services
-const { findUserByEmail } = require("../user/user.service");
+const { findUserByEmail } = require("./user.service");
 const { hashPassword, comparePassword } = require("./password.service");
 
 //prisma client

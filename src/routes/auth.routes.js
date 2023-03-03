@@ -8,7 +8,7 @@ const {
   registerController,
   resetPasswordController,
   verifyEmailController,
-} = require("../controllers/auth/auth.controller");
+} = require("../controllers/auth.controller");
 
 //middlewares
 const {
@@ -18,7 +18,7 @@ const {
   registerValidation,
   resetPasswordValidation,
   verifyEmailValidation,
-} = require("../middlewares/authValidation");
+} = require("../middlewares/auth.middleware");
 
 const router = express.Router();
 

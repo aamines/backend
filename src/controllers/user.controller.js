@@ -1,4 +1,4 @@
-const { updateUserService } = require("../../services/user/user.service");
+const { updateUserService } = require("../services/user.service");
 
 // Update user information
 module.exports.updateUser = async (req, res) => {

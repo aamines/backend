@@ -3,7 +3,7 @@ const { convert } = require("html-to-text");
 const { PrismaClient } = require("@prisma/client");
 
 //utils
-const { generateRandomAlphaNumericCode } = require("../../utils/auth.util");
+const { generateRandomAlphaNumericCode } = require("../utils/auth.util");
 
 //prisma client
 const prisma = new PrismaClient();
