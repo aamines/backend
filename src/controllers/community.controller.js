@@ -1,5 +1,8 @@
+const {PrismaClient}=require("@prisma/client")
+const prisma=new PrismaClient()
+
 // Create a new community
-export const createCommunityController = async (req, res) => {
+module.exports.createCommunityController = async (req, res) => {
   try {
     await prisma.community.create({
       communityName:req.body.communityName,
@@ -13,7 +16,7 @@ export const createCommunityController = async (req, res) => {
 };
 
 
-export const getCommunityById = async (req, res) => {
+module.exports.getCommunityById = async (req, res) => {
   try {
     const community=await prisma.community.find({where:{communityId:req.body.communityId}})
     if(community){

@@ -1,5 +1,5 @@
 const router=require("express").Router()
-const routes=require("../controllers/community/community.controller")
+const routes=require("../controllers/community.controller")
 
 router.post("/new",routes.createCommunity)
 
