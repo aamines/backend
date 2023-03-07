@@ -57,7 +57,7 @@ module.exports.listCommunities = async (req,res)=>{
 }
 
 // list community members
-export const listMembers = async (req,res)=>{
+module.exports.listMembers = async (req,res)=>{
   try{
     let accountId=[]
       accountId=await prisma.account.find({where:{communityId:req.params.communityId}}).userId
