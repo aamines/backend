@@ -1,6 +1,6 @@
 const router=require("express").Router()
-const routes=require("../controllers/community/community.controller")
+const {createCommunityController}=require("../controllers/community.controller")
 
-router.post("/new",routes.createCommunity)
+router.post("/new",createCommunityController)
 
 module.exports=router
