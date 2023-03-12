@@ -10,6 +10,8 @@ const authRoutes = require("./routes/auth.routes.js");
 const userRoutes = require("./routes/user.routes.js");
 const postRoutes = require("./routes/posts.routes.js");
 const storyRoutes = require("../src/routes/story.routes");
+const communityRoutes=require("./routes/community.routes.js")
+const accountRoutes=require("./routes/account.routes.js")
 
 //setting up server
 const app = express();
@@ -34,9 +36,11 @@ app.use(
 
 //endpoints
 app.use("/api/v1/auth", authRoutes);
+app.use("api/v1/community", communityRoutes)
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/post", postRoutes);
 app.use("/api/v1/story", storyRoutes);
+app.use("/api/v1/account/community",accountRoutes);
 
 //default page
 app.get("/", (req, res) => {

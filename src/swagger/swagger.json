@@ -482,10 +482,93 @@
                     "in":"body",
                     "name":"body"
                 }]
+        },
+        "/api/v1/community/new":{
+            "summary":"create new community",
+            "consumes":["application/json"],
+            "produces":["application/json"],
+            "parameters":[{
+                    "in":"body",
+                    "name":"body",
+                    "properties":{
+                        "communityName":{
+                            "type":"string",
+                            "required":true
+                        },
+                        "communityVision":{
+                            "type":"string",
+                            "required":true
+                        },
+                        "termsAndConditions":{
+                            "type":"string",
+                            "required":true
+                        }
+                    }
+            }]
+        },
+        "/api/v1/account/community/join":{
+            "summary":"join community",
+            "consumes":["application/json"],
+            "produces":["application/json"],
+            "parameters":[{
+                    "in":"body",
+                    "name":"body",
+                    "properties":{
+                        "communityId":{
+                            "type":"string",
+                            "required":true
+                        },
+                        "userId":{
+                            "type":"string",
+                            "required":true
+                        }
+                    }
+            }]
+        },
+        "/api/v1/account/community/leave":{
+            "summary":"create new community",
+            "consumes":["application/json"],
+            "produces":["application/json"],
+            "parameters":[{
+                    "in":"body",
+                    "name":"body",
+                    "properties":{
+                        "accountId":{
+                            "type":"string",
+                            "required":true
+                        }
+                    }
+            }]
+        },
+        "/api/v1/account/community/members":{
+            "summary":"create new community",
+            "consumes":["application/json"],
+            "produces":["application/json"],
+            "parameters":[{
+                    "in":"body",
+                    "name":"body",
+                    "properties":{
+                        "communityId":{
+                            "type":"string",
+                            "required":true
+                        }
+                    }
+            }]
+        },
+        "/api/v1/account/communities":{
+            "summary":"create new community",
+            "consumes":["application/json"],
+            "produces":["application/json"],
+            "parameters":[{
+                    "in":"body",
+                    "name":"body",
+                    "properties":{
+                        "userId":{
+                            "type":"string",
+                            "required":true
+                        }
+                    }
+            }]
         }
-        
-        
-        
-        
     }
 }
