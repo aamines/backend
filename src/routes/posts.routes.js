@@ -2,25 +2,25 @@ const express = require("express");
 
 //controllers
 const {
-  createPost,
-  addReactionToComment,
-  addCommentToPost,
-  addReactionToPost,
-  loadComment,
-  loadPostComments,
-  loadPostReactions,
   loadPosts,
+  createPost,
+  loadComment,
+  addCommentToPost,
+  loadPostComments,
+  addReactionToPost,
+  loadPostReactions,
+  addReactionToComment,
 } = require("../controllers/posts.controller");
 
 const router = express.Router();
 
-router.post("/newPost", createPost);
 router.get("/loadPosts", loadPosts);
+router.post("/newPost", createPost);
+router.get("/loadComment", loadComment);
+router.get("/loadPostComments", loadPostComments);
 router.post("/newPostReaction", addReactionToPost);
+router.post("/addCommentToPost", addCommentToPost);
 router.get("/loadPostReactions", loadPostReactions);
 router.post("/newCommentReaction", addReactionToComment);
-router.post("/addCommentToPost", addCommentToPost);
-router.get("/loadPostComments", loadPostComments);
-router.get("/loadComment", loadComment);
 
 module.exports = router;

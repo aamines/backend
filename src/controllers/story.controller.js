@@ -9,7 +9,6 @@ const createStory = async (req, res) => {
       community: req.body.communitId,
     });
   } catch (error) {
-    console.log(error);
     res.status(403).send("unable to create a story");
   }
 };
@@ -32,6 +31,6 @@ const loadWithStoryId = async (req, res) => {
   }
 };
 
-module.exports.loadWithStoryId = loadWithStoryId;
 module.exports.loadStory = loadStory;
 module.exports.createStory = createStory;
+module.exports.loadWithStoryId = loadWithStoryId;
