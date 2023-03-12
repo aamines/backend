@@ -10,7 +10,7 @@ datasource db {
 //media system
 
 model Media {
-    id               Int       @id @default(autoincrement())
+    id               Int          @id @default(autoincrement())
     media_type       Media_type   @relation(fields: [media_typeId], references: [id])
     media_typeId     Int
     media_url        String
@@ -29,7 +29,7 @@ model Media {
 }
 
 model Media_type {
-    id         Int  @id @default(autoincrement())
+    id         Int     @id @default(autoincrement())
     media_type String
     Media      Media[]
 }
@@ -51,7 +51,7 @@ model Role {
 }
 
 model User {
-    id                             Int      @id @default(autoincrement())
+    id                             Int         @id @default(autoincrement())
     names                          String
     email                          String      @unique
     password                       String
@@ -70,7 +70,7 @@ model User {
 }
 
 model Community {
-    id          Int               @id @default(autoincrement())
+    id          Int                  @id @default(autoincrement())
     name        String
     status      Status               @relation(references: [id], fields: [statusId])
     statusId    Int                  @default(1)
@@ -89,7 +89,7 @@ model Community {
 }
 
 model Account {
-    id                 Int             @id @default(autoincrement())
+    id                 Int                  @id @default(autoincrement())
     user               User                 @relation(references: [id], fields: [userId])
     userId             Int
     status             Status               @relation(references: [id], fields: [statusId])
@@ -132,7 +132,7 @@ model AccountOnCommunity {
 }
 
 model Groups {
-    id            Int    @id @default(autoincrement())
+    id            Int       @id @default(autoincrement())
     description   String
     community     Community @relation(references: [id], fields: [communityId])
     communityId   Int
@@ -148,13 +148,13 @@ model Groups {
 //posting system
 
 model Post_Types {
-    id    Int @id @default(autoincrement())
+    id    Int    @id @default(autoincrement())
     type  String
     posts Post[]
 }
 
 model Reaction {
-    id         Int   @id @default(autoincrement())
+    id         Int      @id @default(autoincrement())
     reaction   String
     affectorId Int
     account    Account  @relation(references: [id], fields: [accountId])
@@ -166,7 +166,7 @@ model Reaction {
 }
 
 model Comment {
-    id         Int     @id @default(autoincrement())
+    id         Int        @id @default(autoincrement())
     comment    String
     reactions  Reaction[]
     affectorId Int
@@ -178,7 +178,7 @@ model Comment {
 }
 
 model Post {
-    id            Int      @id @default(autoincrement())
+    id            Int          @id @default(autoincrement())
     type          Post_Types   @relation(references: [id], fields: [typeId])
     typeId        Int
     posted        Account      @relation(references: [id], fields: [posted_by])
@@ -194,7 +194,7 @@ model Post {
 }
 
 model Project {
-    id          Int    @id @default(autoincrement())
+    id          Int       @id @default(autoincrement())
     community   Community @relation(references: [id], fields: [communityId])
     communityId Int
     description String
@@ -207,7 +207,7 @@ model Project {
 }
 
 model Achievement {
-    id          Int    @id @default(autoincrement())
+    id          Int       @id @default(autoincrement())
     community   Community @relation(references: [id], fields: [communityId])
     communityId Int
     description String
@@ -221,13 +221,13 @@ model Achievement {
 //memories system
 
 model Memory_Types {
-    id       Int   @id @default(autoincrement())
+    id       Int      @id @default(autoincrement())
     type     String
     memories Memory[]
 }
 
 model Memory {
-    id          Int       @id @default(autoincrement())
+    id          Int          @id @default(autoincrement())
     Memory_Type Memory_Types @relation(fields: [memory_Type], references: [id])
     memory_Type Int
     content     String

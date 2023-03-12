@@ -5,12 +5,14 @@ module.exports.registerValidation = (req, res, next) => {
   const schema = Joi.object({
     names: Joi.string().min(5).max(50).required(),
     email: Joi.string().min(10).max(60).email().required(),
-    country: Joi.string().min(2).max(15).required(),
+    country: Joi.string().min(2).max(40).required(),
     password: Joi.string().min(8).max(15).required(),
   });
   const { error } = schema.validate(req.body);
   if (error) {
-    return res.status(400).send(error.details[0].message);
+    return res.status(400).json({
+      message: error.details[0].message,
+    });
   }
   next();
 };
@@ -23,7 +25,9 @@ module.exports.loginValidation = (req, res, next) => {
   });
   const { error } = schema.validate(req.body);
   if (error) {
-    return res.status(400).send(error.details[0].message);
+    return res.status(400).json({
+      message: error.details[0].message,
+    });
   }
   next();
 };
@@ -35,7 +39,9 @@ module.exports.forgotPasswordValidation = (req, res, next) => {
   });
   const { error } = schema.validate(req.body);
   if (error) {
-    return res.status(400).send(error.details[0].message);
+    return res.status(400).json({
+      message: error.details[0].message,
+    });
   }
   next();
 };
@@ -49,7 +55,9 @@ module.exports.resetPasswordValidation = (req, res, next) => {
   });
   const { error } = schema.validate(req.body);
   if (error) {
-    return res.status(400).send(error.details[0].message);
+    return res.status(400).json({
+      message: error.details[0].message,
+    });
   }
   next();
 };
@@ -63,7 +71,9 @@ module.exports.newPasswordValidation = (req, res, next) => {
   });
   const { error } = schema.validate(req.body);
   if (error) {
-    return res.status(400).send(error.details[0].message);
+    return res.status(400).json({
+      message: error.details[0].message,
+    });
   }
   next();
 };
@@ -77,7 +87,9 @@ module.exports.updateUserValidation = (req, res, next) => {
   });
   const { error } = schema.validate(req.body);
   if (error) {
-    return res.status(400).send(error.details[0].message);
+    return res.status(400).json({
+      message: error.details[0].message,
+    });
   }
   next();
 };
@@ -90,7 +102,9 @@ module.exports.verifyEmailValidation = async (req, res, next) => {
   });
   const { error } = schema.validate(req.body);
   if (error) {
-    return res.status(400).send(error.details[0].message);
+    return res.status(400).json({
+      message: error.details[0].message,
+    });
   }
   next();
 };
