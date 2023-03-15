@@ -35,7 +35,7 @@ module.exports.createUser = async (data) => {
     const hashedPassword = await hashPassword(data.password);
 
     const code = crypto.randomBytes(20).toString('hex');
-    const verificationLink = `https://projectia.co/verify-email?email=${encodeURIComponent(data.email)}&token=${encodeURIComponent(code)}`;
+    const verificationLink = `https://projectia-dev.netlify.app//verify-email?email=${encodeURIComponent(data.email)}&token=${encodeURIComponent(code)}`;
     const newUser = await prisma.user.create({
       data: {
         names: data.names,

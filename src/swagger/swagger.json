@@ -89,7 +89,7 @@
                 }],
                 "responses": {
                     "200": {
-                        "description": "Email verified, you can now login"
+                        "description": "Email verified, you are now logged in"
                     },
                     "500": {
                         "description": "internal server error"
