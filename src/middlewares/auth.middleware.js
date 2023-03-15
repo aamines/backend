@@ -98,7 +98,7 @@ module.exports.updateUserValidation = (req, res, next) => {
 module.exports.verifyEmailValidation = async (req, res, next) => {
   const schema = Joi.object({
     email: Joi.string().min(6).max(60).email().required(),
-    code: Joi.string().required().min(5).max(5),
+    code: Joi.string().required().min(40).max(40),
   });
   const { error } = schema.validate(req.body);
   if (error) {

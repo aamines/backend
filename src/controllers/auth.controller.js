@@ -38,15 +38,8 @@ module.exports.registerController = async (req, res) => {
 module.exports.verifyEmailController = async (req, res) => {
   try {
     const { email, code } = req.body;
-    await verifyEmail(email, code)
-      .then((message) => {
-        return res.status(200).json({
-          message: message,
-        });
-      })
-      .catch((error) => {
-        throw new Error(error.message);
-      });
+    const result = await verifyEmail(email, code);
+    res.status(200).json(result);
   } catch (error) {
     return res.status(500).json({
       message: error.message,
