@@ -4,11 +4,22 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title Email Verification Code
+        title Email Verification Link
     body
         p Confirm your email address
-        p Your confirmation code is below — enter it in your open browser window and we'll help you get signed in.
-        p ${code}
-        p This code will expire in 24 hours
-        p If you didn’t request this email, there’s nothing to worry about — you can safely ignore it.
-        p Thanks for using Projectia
+        p 
+          | Your confirmation code is below — enter it in your open browser window and we'll help you get signed in.
+          br
+        p 
+          a(href= link) Verification Link
+        p 
+          br
+          | This code will expire in 24 hours
+          br
+        p 
+          br
+          | If you didn’t request this email, there’s nothing to worry about — you can safely ignore it.
+          br
+        p 
+          br
+          | Thanks for using Projectia

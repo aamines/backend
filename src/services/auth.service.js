@@ -1,6 +1,8 @@
 const pug = require("pug");
+const crypto = require('crypto');
 const { convert } = require("html-to-text");
 const { PrismaClient } = require("@prisma/client");
+const path = require('path');
 
 //configs
 const sendEmail = require("../utils/email.util");
@@ -30,37 +32,46 @@ module.exports.createUser = async (data) => {
     }
 
     //create user
-    const hashedPassowrd = await hashPassword(data.password);
-    const code = generateRandomAlphaNumericCode().toUpperCase();
+    const hashedPassword = await hashPassword(data.password);
+
+    const code = crypto.randomBytes(20).toString('hex');
+    const verificationLink = `https://projectia.co/verify-email?email=${encodeURIComponent(data.email)}&token=${encodeURIComponent(code)}`;
     const newUser = await prisma.user.create({
       data: {
         names: data.names,
         email: data.email,
-        password: hashedPassowrd,
+        password: hashedPassword,
         country: data.country,
         emailVerificationCode: code,
         emailVerificationCodeExpiresAt: Date.now() + 24 * 60 * 60 * 1000,
         statusId: 1,
       },
     });
-
-    //send email
-    const html = pug.renderFile(
-      `${__dirname}/../../views/emails/verification.pug`,
-      {
-        code: code,
-      }
-    );
+    // send email using pug views
+    // const templatePath = path.join(__dirname, '..', 'views', 'emails', 'verification.pug');
+    // const html = pug.renderFile(
+    //   `${templatePath}`,
+    //   {
+    //     link: verificationLink,
+    //   }
+    // );
     if (newUser) {
       sendEmail({
         to: data.email,
         subject: "Projectia - Email Verification",
         from: `${process.env.EMAIL_USER}`,
-        text: convert(html),
+        text: `
+        <p> Confirm your email address </p>
+        <p> Your email confirmation link is below — click on it and we'll help you get signed in. </p>
+        <p> <a href=${verificationLink}> Verification Link </a>
+        <p> This code will expire in 24 hours </p>
+        <p>If you didn’t request this email, there’s nothing to worry about — you can safely ignore it. </p>
+        <p> Thanks for using Projectia </p>
+        `,
       });
 
       return new Promise((resolve, reject) => {
-        resolve(`check ${newUser.email} for verification code`);
+        resolve(`check ${newUser.email} for verification link`);
       });
     }
   } catch (error) {
@@ -72,47 +83,66 @@ module.exports.createUser = async (data) => {
 
 // verify email
 module.exports.verifyEmail = async (email, code) => {
-  try {
-    const user = await findUserByEmail(email);
-    if (user != null) {
-      if (
-        user.emailVerificationCode === code &&
-        user.emailVerificationCodeExpiresAt != null
-      ) {
-        if (user.emailVerificationCodeExpiresAt > Date.now()) {
-          await prisma.user
-            .update({
-              where: {
-                email: email,
-              },
-              data: {
-                emailVerified: true,
-                emailVerificationCode: null,
-                emailVerificationCodeExpiresAt: null,
-              },
-            })
-            .then(() => {
-              return new Promise((resolve, reject) => {
-                resolve("email verified");
-              });
-            })
-            .catch((error) => {
-              throw new Error(error.message);
-            });
-        } else {
-          throw new Error("code expired");
-        }
-      } else {
-        throw new Error("invalid code");
-      }
-    } else {
-      throw new Error("user not found");
+  const user = await findUserByEmail(email);
+  if (!user) return "user not found";
+
+  if (user.emailVerificationCode !== code) return "Invalid code!";
+  if (user.emailVerificationCodeExpiresAt < Date.now()) return "Verification token expired!";
+  
+  const updatedUser = await prisma.user.update({
+    where: {
+      email
+    },
+    data: {
+      emailVerified: true,
+      emailVerificationCode: null,
+      emailVerificationCodeExpiresAt: null,
     }
-  } catch (error) {
-    return new Promise((resolve, reject) => {
-      reject(error);
-    });
-  }
+  });
+
+  if (!updatedUser) return "Could not update the user";
+
+  const token = await generateToken(updatedUser);
+  return token;
+  // try {
+  //   if (user != null) {
+  //     if (
+  //       user.emailVerificationCode === code &&
+  //       user.emailVerificationCodeExpiresAt != null
+  //     ) {
+  //       if (user.emailVerificationCodeExpiresAt > Date.now()) {
+  //         await prisma.user
+  //           .update({
+  //             where: {
+  //               email: email,
+  //             },
+  //             data: {
+  //               emailVerified: true,
+  //               // emailVerificationCode: null,
+  //               // emailVerificationCodeExpiresAt: null,
+  //             },
+  //           })
+  //           .then(async () => {
+  //             const token = await generateToken(user);
+  //             return token;
+  //           })
+  //           .catch((error) => {
+  //             throw new Error(error.message);
+  //           });
+  //       } else {
+  //         throw new Error("code expired");
+  //       }
+  //     } else {
+  //       throw new Error("invalid code");
+  //     }
+  //   } else {
+  //     throw new Error("user not found");
+  //   }
+  // } catch (error) {
+  //   return new Promise((resolve, reject) => {
+  //     reject(error);
+  //   });
+  // }
 };
 
 //login user
