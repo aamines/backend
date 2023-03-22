@@ -10,8 +10,8 @@ const authRoutes = require("./routes/auth.routes.js");
 const userRoutes = require("./routes/user.routes.js");
 const postRoutes = require("./routes/posts.routes.js");
 const storyRoutes = require("../src/routes/story.routes");
-const communityRoutes = require("./routes/community.routes.js");
 const accountRoutes = require("./routes/account.routes.js");
+const communityRoutes = require("./routes/community.routes.js");
 
 //setting up server
 const app = express();
@@ -20,7 +20,7 @@ const app = express();
 dotenv.config();
 app.use(cors());
 app.set("view engine", "pug");
-app.set("views", "./views");
+app.set("views", __dirname + "/views");
 
 //middlewares
 app.use(logger("dev"));
@@ -44,7 +44,7 @@ app.use("api/v1/community", communityRoutes);
 
 //default page
 app.get("/", (req, res) => {
-  res.send("<p>Welcome to Projectia Backend APIs </p>");
+  res.render("index");
 });
 
 module.exports = app;
