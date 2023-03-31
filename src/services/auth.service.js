@@ -1,8 +1,8 @@
 const pug = require("pug");
-const crypto = require('crypto');
+const path = require("path");
+const crypto = require("crypto");
 const { convert } = require("html-to-text");
 const { PrismaClient } = require("@prisma/client");
-const path = require('path');
 
 //configs
 const sendEmail = require("../utils/email.util");
@@ -34,8 +34,10 @@ module.exports.createUser = async (data) => {
     //create user
     const hashedPassword = await hashPassword(data.password);
 
-    const code = crypto.randomBytes(20).toString('hex');
-    const verificationLink = `https://projectia-dev.netlify.app//verify-email?email=${encodeURIComponent(data.email)}&token=${encodeURIComponent(code)}`;
+    const code = crypto.randomBytes(20).toString("hex");
+    const verificationLink = `https://projectia-dev.netlify.app//verify-email?email=${encodeURIComponent(
+      data.email
+    )}&token=${encodeURIComponent(code)}`;
     const newUser = await prisma.user.create({
       data: {
         names: data.names,
@@ -87,17 +89,18 @@ module.exports.verifyEmail = async (email, code) => {
   if (!user) return "user not found";
 
   if (user.emailVerificationCode !== code) return "Invalid code!";
-  if (user.emailVerificationCodeExpiresAt < Date.now()) return "Verification token expired!";
-  
+  if (user.emailVerificationCodeExpiresAt < Date.now())
+    return "Verification token expired!";
+
   const updatedUser = await prisma.user.update({
     where: {
-      email
+      email,
     },
     data: {
       emailVerified: true,
       emailVerificationCode: null,
       emailVerificationCodeExpiresAt: null,
-    }
+    },
   });
 
   if (!updatedUser) return "Could not update the user";
