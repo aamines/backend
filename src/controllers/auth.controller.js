@@ -19,10 +19,17 @@ module.exports.registerController = async (req, res) => {
 
   try {
     await createUser(data)
-      .then((message) => {
-        return res.status(200).json({
-          message: message,
-        });
+      .then(async (message) => {
+        await login(data.email, data.password)
+          .then((token) => {
+            return res.status(200).json({
+              message: "Account created successfully",
+              token: token,
+            });
+          })
+          .catch((error) => {
+            throw new Error(error.message);
+          });
       })
       .catch((err) => {
         throw new Error(err.message);

@@ -35,41 +35,46 @@ module.exports.createUser = async (data) => {
     const hashedPassword = await hashPassword(data.password);
 
     const code = crypto.randomBytes(20).toString("hex");
-    const verificationLink = `https://projectia-dev.netlify.app//verify-email?email=${encodeURIComponent(
-      data.email
-    )}&token=${encodeURIComponent(code)}`;
+
+    const params = {
+      email: data.email,
+      token: code,
+    };
+
+    const verificationLink = `${process.env.FRONTEND_URL}?${new URLSearchParams(
+      params
+    )}`;
+
     const newUser = await prisma.user.create({
       data: {
         names: data.names,
         email: data.email,
         password: hashedPassword,
         country: data.country,
-        emailVerificationCode: code,
-        emailVerificationCodeExpiresAt: Date.now() + 24 * 60 * 60 * 1000,
+        emailVerificationToken: code,
         statusId: 1,
       },
     });
+
     // send email using pug views
-    // const templatePath = path.join(__dirname, '..', 'views', 'emails', 'verification.pug');
-    // const html = pug.renderFile(
-    //   `${templatePath}`,
-    //   {
-    //     link: verificationLink,
-    //   }
-    // );
+    const templatePath = path.join(
+      __dirname,
+      "..",
+      "views",
+      "emails",
+      "verification.pug"
+    );
+
+    const html = pug.renderFile(`${templatePath}`, {
+      link: verificationLink,
+    });
+
     if (newUser) {
       sendEmail({
         to: data.email,
         subject: "Projectia - Email Verification",
         from: `${process.env.EMAIL_USER}`,
-        text: `
-        <p> Confirm your email address </p>
-        <p> Your email confirmation link is below — click on it and we'll help you get signed in. </p>
-        <p> <a href=${verificationLink}> Verification Link </a>
-        <p> This code will expire in 24 hours </p>
-        <p>If you didn’t request this email, there’s nothing to worry about — you can safely ignore it. </p>
-        <p> Thanks for using Projectia </p>
-        `,
+        text: html,
       });
 
       return new Promise((resolve, reject) => {
@@ -156,10 +161,6 @@ module.exports.login = async (email, password) => {
 
     if (!user || user == null) {
       throw new Error("invalid email or password");
-    }
-
-    if (!user.emailVerified) {
-      throw new Error("email not verified");
     }
 
     //compare password

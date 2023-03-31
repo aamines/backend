@@ -51,18 +51,19 @@ model Role {
 }
 
 model User {
-    id            Int         @id @default(autoincrement())
-    names         String
-    email         String      @unique
-    password      String
-    country       String
-    emailVerified Boolean     @default(false)
-    createdAt     DateTime    @default(now())
-    updatedAt     DateTime    @updatedAt
-    status        Status      @relation(fields: [statusId], references: [id])
-    statusId      Int         @default(1)
-    accounts      Account[]
-    Community     Community[]
+    id                     Int         @id @default(autoincrement())
+    names                  String
+    email                  String      @unique
+    password               String
+    country                String
+    emailVerificationToken String?     @unique
+    emailVerified          Boolean     @default(false)
+    createdAt              DateTime    @default(now())
+    updatedAt              DateTime    @updatedAt
+    status                 Status      @relation(fields: [statusId], references: [id])
+    statusId               Int         @default(1)
+    accounts               Account[]
+    Community              Community[]
 }
 
 model Community {

@@ -20,6 +20,7 @@ const app = express();
 dotenv.config();
 app.use(cors());
 app.set("view engine", "pug");
+app.use(express.static("assets"));
 app.set("views", __dirname + "/views");
 
 //middlewares
