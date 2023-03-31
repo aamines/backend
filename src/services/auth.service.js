@@ -41,9 +41,9 @@ module.exports.createUser = async (data) => {
       token: code,
     };
 
-    const verificationLink = `${process.env.FRONTEND_URL}?${new URLSearchParams(
-      params
-    )}`;
+    const verificationLink = `${
+      process.env.FRONTEND_URL
+    }/verify?${new URLSearchParams(params)}`;
 
     const newUser = await prisma.user.create({
       data: {
@@ -90,67 +90,42 @@ module.exports.createUser = async (data) => {
 
 // verify email
 module.exports.verifyEmail = async (email, code) => {
-  const user = await findUserByEmail(email);
-  if (!user) return "user not found";
+  try {
+    //check email
+    const user = await findUserByEmail(email);
 
-  if (user.emailVerificationCode !== code) return "Invalid code!";
-  if (user.emailVerificationCodeExpiresAt < Date.now())
-    return "Verification token expired!";
+    if (!user || user == null) {
+      throw new Error("Email doesn't exist");
+    }
 
-  const updatedUser = await prisma.user.update({
-    where: {
-      email,
-    },
-    data: {
-      emailVerified: true,
-      emailVerificationCode: null,
-      emailVerificationCodeExpiresAt: null,
-    },
-  });
-
-  if (!updatedUser) return "Could not update the user";
-
-  const token = await generateToken(updatedUser);
-  return token;
-  // try {
-  //   if (user != null) {
-  //     if (
-  //       user.emailVerificationCode === code &&
-  //       user.emailVerificationCodeExpiresAt != null
-  //     ) {
-  //       if (user.emailVerificationCodeExpiresAt > Date.now()) {
-  //         await prisma.user
-  //           .update({
-  //             where: {
-  //               email: email,
-  //             },
-  //             data: {
-  //               emailVerified: true,
-  //               // emailVerificationCode: null,
-  //               // emailVerificationCodeExpiresAt: null,
-  //             },
-  //           })
-  //           .then(async () => {
-  //             const token = await generateToken(user);
-  //             return token;
-  //           })
-  //           .catch((error) => {
-  //             throw new Error(error.message);
-  //           });
-  //       } else {
-  //         throw new Error("code expired");
-  //       }
-  //     } else {
-  //       throw new Error("invalid code");
-  //     }
-  //   } else {
-  //     throw new Error("user not found");
-  //   }
-  // } catch (error) {
-  //   return new Promise((resolve, reject) => {
-  //     reject(error);
-  //   });
-  // }
+    //check code
+    if (user?.emailVerificationToken === code) {
+      await prisma.user
+        .update({
+          where: {
+            email: email,
+          },
+          data: {
+            emailVerified: true,
+            emailVerificationToken: null,
+          },
+        })
+        .then(async () => {
+          return new Promise((resolve, reject) => {
+            resolve("Email verified");
+          });
+        })
+        .catch((error) => {
+          throw new Error(error.message);
+        });
+    } else {
+      throw new Error("Invalid code");
+    }
+  } catch (error) {
+    return new Promise((resolve, reject) => {
+      reject(error);
+    });
+  }
 };
 
 //login user
