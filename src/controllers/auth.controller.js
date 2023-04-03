@@ -7,6 +7,7 @@ const {
   resetPassword,
   verifyEmail,
 } = require("../services/auth.service");
+const { hasAccount } = require("../services/user.service");
 
 // Create a new user
 module.exports.registerController = async (req, res) => {
@@ -66,10 +67,13 @@ module.exports.loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
     await login(email, password)
-      .then((token) => {
-        return res.status(200).json({
-          message: "Login successful",
-          token: token,
+      .then((data) => {
+        hasAccount(data.user.id).then((response) => {
+          return res.status(200).json({
+            message: "Login successful",
+            hasAccount: response === null ? false : true,
+            token: data.token,
+          });
         });
       })
       .catch((error) => {

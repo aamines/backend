@@ -147,7 +147,7 @@ module.exports.login = async (email, password) => {
     //generate token
     const token = await generateToken(user);
     return new Promise((resolve, reject) => {
-      resolve(token);
+      resolve({ user, token });
     });
   } catch (error) {
     return new Promise((resolve, reject) => {

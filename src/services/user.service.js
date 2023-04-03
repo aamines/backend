@@ -85,6 +85,7 @@ module.exports.getUserById = async (id) => {
       id,
     },
   });
+
   return lodash.pick(user, [
     "id",
     "names",
@@ -95,6 +96,17 @@ module.exports.getUserById = async (id) => {
   ]);
 };
 
+// check if user has an account
+module.exports.hasAccount = async (userId) => {
+  const user = await prisma.account.findFirst({
+    where: {
+      userId: userId,
+    },
+  });
+
+  return user;
+};
+
 // find user by email
 module.exports.findUserByEmail = async (email) => {
   const user = await prisma.user.findUnique({
@@ -102,6 +114,7 @@ module.exports.findUserByEmail = async (email) => {
       email: email,
     },
   });
+
   if (user) {
     return user;
   } else {
