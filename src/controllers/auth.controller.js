@@ -6,6 +6,7 @@ const {
   login,
   resetPassword,
   verifyEmail,
+  verifyToken,
 } = require("../services/auth.service");
 const { hasAccount } = require("../services/user.service");
 
@@ -34,6 +35,26 @@ module.exports.registerController = async (req, res) => {
       })
       .catch((err) => {
         throw new Error(err.message);
+      });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+// Verify token
+module.exports.verifyToken = async (req, res) => {
+  try {
+    const { token } = req.body;
+    await verifyToken(token)
+      .then((message) => {
+        return res.status(200).json({
+          message: "token is valid",
+        });
+      })
+      .catch((error) => {
+        throw new Error("Invalid token");
       });
   } catch (error) {
     return res.status(500).json({

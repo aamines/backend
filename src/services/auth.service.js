@@ -1,6 +1,7 @@
 const pug = require("pug");
 const path = require("path");
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 const { convert } = require("html-to-text");
 const { PrismaClient } = require("@prisma/client");
 
@@ -86,6 +87,20 @@ module.exports.createUser = async (data) => {
       reject(error);
     });
   }
+};
+
+// Verify token
+module.exports.verifyToken = async (token) => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, process.env.JWT_ACCESS_SECRET, (err, decoded) => {
+      if (err) {
+        console.log(err);
+        reject(err);
+      } else {
+        resolve(decoded);
+      }
+    });
+  });
 };
 
 // verify email

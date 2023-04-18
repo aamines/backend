@@ -8,6 +8,7 @@ const {
   registerController,
   resetPasswordController,
   verifyEmailController,
+  verifyToken,
 } = require("../controllers/auth.controller");
 
 //middlewares
@@ -22,7 +23,7 @@ const {
 
 const router = express.Router();
 
-// Create a user
+router.post("/verify-token", verifyToken);
 router.post("/login", loginValidation, loginController);
 router.post("/register", registerValidation, registerController);
 router.put("/verify-email", verifyEmailValidation, verifyEmailController);
