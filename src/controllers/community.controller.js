@@ -19,9 +19,10 @@ module.exports.createCommunityController = async (req, res) => {
     await createCommunity(data)
       .then(async (community) => {
         await createAdminAccount({ user: req.user, community: community })
-          .then(() => {
+          .then((account) => {
             return res.status(200).json({
               message: "Community created",
+              data: account,
             });
           })
           .catch(() => {

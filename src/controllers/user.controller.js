@@ -4,7 +4,7 @@ const { updateUserService, getUserById } = require("../services/user.service");
 module.exports.updateUser = async (req, res) => {
   try {
     const { id } = req.user;
-    const result = await updateUserService(id, req.body);
+    await updateUserService(id, req.body);
     return res.status(200).json({
       message: "user updates",
     });
