@@ -9,7 +9,7 @@ const swaggerDocs = require("./swagger/swagger.json");
 const authRoutes = require("./routes/auth.routes.js");
 const userRoutes = require("./routes/user.routes.js");
 const postRoutes = require("./routes/posts.routes.js");
-const storyRoutes = require("../src/routes/story.routes");
+const memoryRoutes = require("../src/routes/memory.routes.js");
 const accountRoutes = require("./routes/account.routes.js");
 const communityRoutes = require("./routes/community.routes.js");
 
@@ -39,7 +39,7 @@ app.use(
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/post", postRoutes);
-app.use("/api/v1/story", storyRoutes);
+app.use("/api/v1/story", memoryRoutes);
 app.use("/api/v1/account", accountRoutes);
 app.use("/api/v1/community", communityRoutes);
 
