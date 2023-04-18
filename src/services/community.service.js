@@ -14,7 +14,6 @@ exports.createCommunity = async (details) => {
           name: details.name,
           type: details.type,
           vision: details.vision,
-          creatorId: details.creatorId,
         },
       })
       .then((community) => {

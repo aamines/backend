@@ -92,7 +92,7 @@ module.exports.loginController = async (req, res) => {
         hasAccount(data.user.id).then((response) => {
           return res.status(200).json({
             message: "Login successful",
-            hasAccount: response === null ? false : true,
+            account: response,
             token: data.token,
           });
         });

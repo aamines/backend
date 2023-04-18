@@ -11,7 +11,6 @@ module.exports.createCommunityController = async (req, res) => {
   const data = {
     name: req.body.name,
     type: req.body.type,
-    creatorId: req.user.id,
     vision: req.body.vision,
   };
 

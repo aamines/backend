@@ -98,13 +98,13 @@ module.exports.getUserById = async (id) => {
 
 // check if user has an account
 module.exports.hasAccount = async (userId) => {
-  const user = await prisma.account.findFirst({
+  const account = await prisma.account.findFirst({
     where: {
       userId: userId,
     },
   });
 
-  return user;
+  return account;
 };
 
 // find user by email

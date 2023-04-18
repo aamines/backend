@@ -24,6 +24,33 @@ module.exports.addPersonController = async (req, res) => {
   });
 };
 
+exports.getAccount = async (req, res) => {
+  const data = {
+    id: req.params.id,
+  };
+
+  await prisma.account
+    .findUnique({
+      where: {
+        id: parseInt(data.id),
+      },
+      include: {
+        user: true,
+      },
+    })
+    .then((account) => {
+      return res.status(200).json({
+        message: "account",
+        data: account,
+      });
+    })
+    .catch((error) => {
+      return res.status(400).json({
+        message: error.message,
+      });
+    });
+};
+
 // leave community
 module.exports.leaveController = async (req, res) => {
   return new Promise(async (resolve, reject) => {

@@ -51,82 +51,67 @@ model Role {
 }
 
 model User {
-    id                     Int         @id @default(autoincrement())
+    id                     Int       @id @default(autoincrement())
     names                  String
-    email                  String      @unique
+    email                  String    @unique
     password               String
     country                String
-    emailVerificationToken String?     @unique
-    emailVerified          Boolean     @default(false)
-    createdAt              DateTime    @default(now())
-    updatedAt              DateTime    @updatedAt
-    status                 Status      @relation(fields: [statusId], references: [id])
-    statusId               Int         @default(1)
+    emailVerificationToken String?   @unique
+    emailVerified          Boolean   @default(false)
+    createdAt              DateTime  @default(now())
+    updatedAt              DateTime  @updatedAt
+    status                 Status    @relation(fields: [statusId], references: [id])
+    statusId               Int       @default(1)
     accounts               Account[]
-    Community              Community[]
 }
 
 model Community {
-    id          Int                  @id @default(autoincrement())
+    id          Int           @id @default(autoincrement())
     name        String
     type        String
     vision      String
-    status      Status               @relation(references: [id], fields: [statusId])
-    statusId    Int                  @default(1)
-    media       Media?               @relation(references: [id], fields: [profile])
+    status      Status        @relation(references: [id], fields: [statusId])
+    statusId    Int           @default(1)
+    media       Media?        @relation(references: [id], fields: [profile])
     profile     Int?
-    User        User                 @relation(fields: [creatorId], references: [id])
-    creatorId   Int
-    createdAt   DateTime             @default(now())
-    updatedAt   DateTime             @updatedAt
-    accounts    AccountOnCommunity[]
-    Milestone   Milestone[]
-    Groups      Groups[]
-    Achievement Achievement[]
-    Account     Account[]
+    createdAt   DateTime      @default(now())
+    updatedAt   DateTime      @updatedAt
+    milestones  Milestone[]
+    groups      Groups[]
+    achievement Achievement[]
+    accounts    Account[]
 }
 
 model Account {
-    id                 Int                  @id @default(autoincrement())
-    user               User                 @relation(references: [id], fields: [userId])
-    userId             Int
-    status             Status               @relation(references: [id], fields: [statusId])
-    statusId           Int                  @default(1)
-    role               Role                 @relation(references: [id], fields: [roleId])
-    roleId             Int                  @default(3)
-    Community          Community            @relation(fields: [communityId], references: [id])
-    communityId        Int
-    media_profile      Media?               @relation(references: [id], fields: [profile], name: "profile")
-    profile            Int?
-    media_banner       Media?               @relation(references: [id], fields: [banner], name: "banner")
-    banner             Int?
-    createdAt          DateTime             @default(now())
-    updatedAt          DateTime             @updatedAt
-    reactions          Reaction[]
-    comments           Comment[]
-    memories           Memory[]
-    Media              Media?               @relation(fields: [mediaId], references: [id])
-    mediaId            Int?
-    Post               Post[]
-    Milestone_owners   Milestone?           @relation(fields: [Milestone_owner], references: [id], name: "owners")
-    Milestone_owner    Int?
-    Milestone_upvotes  Milestone?           @relation(fields: [Milestone_upvote], references: [id], name: "upvotes")
-    Milestone_upvote   Int?
-    Groups             Groups?              @relation(fields: [groupsId], references: [id])
-    groupsId           Int?
-    Achievement        Achievement?         @relation(fields: [achievementId], references: [id])
-    achievementId      Int?
-    AccountOnCommunity AccountOnCommunity[]
-}
-
-model AccountOnCommunity {
-    community   Community @relation(references: [id], fields: [communityId])
-    communityId Int
-    account     Account   @relation(references: [id], fields: [accountId])
-    accountId   Int
-    assignedAt  DateTime  @default(now())
-
-    @@id([communityId, accountId])
+    id                Int          @id @default(autoincrement())
+    user              User         @relation(references: [id], fields: [userId])
+    userId            Int
+    community         Community    @relation(references: [id], fields: [communityId])
+    communityId       Int
+    status            Status       @relation(references: [id], fields: [statusId])
+    statusId          Int          @default(1)
+    role              Role         @relation(references: [id], fields: [roleId])
+    roleId            Int          @default(3)
+    media_profile     Media?       @relation(references: [id], fields: [profile], name: "profile")
+    profile           Int?
+    media_banner      Media?       @relation(references: [id], fields: [banner], name: "banner")
+    banner            Int?
+    createdAt         DateTime     @default(now())
+    updatedAt         DateTime     @updatedAt
+    reactions         Reaction[]
+    comments          Comment[]
+    memories          Memory[]
+    Media             Media?       @relation(fields: [mediaId], references: [id])
+    mediaId           Int?
+    Post              Post[]
+    milestone_owners  Milestone?   @relation(fields: [milestone_owner], references: [id], name: "owners")
+    milestone_owner   Int?
+    milestone_upvotes Milestone?   @relation(fields: [milestone_upvote], references: [id], name: "upvotes")
+    milestone_upvote  Int?
+    Groups            Groups?      @relation(fields: [groupsId], references: [id])
+    groupsId          Int?
+    achievement       Achievement? @relation(fields: [achievementId], references: [id])
+    achievementId     Int?
 }
 
 model Groups {
