@@ -2,6 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 
 //services
 const { createCommunity } = require("../services/community.service");
+const { createAdminAccount } = require("../services/account.service");
 
 const prisma = new PrismaClient();
 
@@ -16,7 +17,19 @@ module.exports.createCommunityController = async (req, res) => {
 
   try {
     await createCommunity(data)
-      .then((community) => {})
+      .then(async (community) => {
+        await createAdminAccount({ user: req.user, community: community })
+          .then(() => {
+            return res.status(200).json({
+              message: "Community created",
+            });
+          })
+          .catch(() => {
+            return res.status(500).json({
+              message: "Something went wrong",
+            });
+          });
+      })
       .catch((error) => {
         throw new Error(error.message);
       });

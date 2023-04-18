@@ -4,14 +4,15 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 //create account
-module.exports.createAccount = (user) => {
+exports.createAccount = (details) => {
   return new Promise(async (resolve, reject) => {
     await prisma.account
       .create({
         data: {
-          userId: user.id,
           roleId: 2,
           statusId: 1,
+          userId: details.user.id,
+          communityId: details.community.id,
         },
       })
       .then((account) => {
@@ -23,8 +24,29 @@ module.exports.createAccount = (user) => {
   });
 };
 
-//delete accounts
-module.exports.deleteAccounts = (id) => {
+//create admin account
+exports.createAdminAccount = (details) => {
+  return new Promise(async (resolve, reject) => {
+    await prisma.account
+      .create({
+        data: {
+          roleId: 1,
+          statusId: 1,
+          userId: details.user.id,
+          communityId: details.community.id,
+        },
+      })
+      .then((account) => {
+        resolve(account);
+      })
+      .catch((error) => {
+        reject(error.message);
+      });
+  });
+};
+
+//delete account
+exports.deleteAccount = (id) => {
   return new Promise((resolve, reject) => {
     prisma.account
       .deleteMany({
