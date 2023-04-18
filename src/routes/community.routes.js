@@ -11,7 +11,13 @@ const {
 const {
   newCommunityValidation,
 } = require("../middlewares/community.middleware");
+const { protect } = require("../middlewares/protect.middleware");
 
-router.post("/new", newCommunityValidation, createCommunityController);
+router.post(
+  "/create",
+  protect,
+  newCommunityValidation,
+  createCommunityController
+);
 
 module.exports = router;

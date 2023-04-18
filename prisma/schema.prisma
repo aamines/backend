@@ -69,9 +69,10 @@ model User {
 model Community {
     id          Int                  @id @default(autoincrement())
     name        String
+    type        String
+    vision      String
     status      Status               @relation(references: [id], fields: [statusId])
     statusId    Int                  @default(1)
-    description String
     media       Media?               @relation(references: [id], fields: [profile])
     profile     Int?
     User        User                 @relation(fields: [creatorId], references: [id])

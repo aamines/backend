@@ -1,29 +1,33 @@
-import { PrismaClient } from "@prisma/client";
-import { createAccount, createAdminAccount } from "../account/account.service";
-import { findUserByEmail } from "../user/user.service";
+const { PrismaClient } = require("@prisma/client");
+//services
+const { findUserByEmail } = require("./user.service");
+const { createAccount } = require("./account.service");
 
 const prisma = new PrismaClient();
 
 // Creating a community
-export const createCommunity = async (communityDetails, userId) => {
-  const newCommunity = await prisma.community.create({
-    data: {
-      name: communityDetails.name,
-      description: communityDetails.description,
-      creatorId: userId,
-    },
+exports.createCommunity = async (details) => {
+  return new Promise(async (resolve, reject) => {
+    await prisma.community
+      .create({
+        data: {
+          name: details.name,
+          type: details.type,
+          vision: details.vision,
+          creatorId: details.creatorId,
+        },
+      })
+      .then((community) => {
+        resolve(community);
+      })
+      .catch((error) => {
+        reject("Somethign went wrong");
+      });
   });
-  if (!newCommunity) {
-    return "could not create a new community";
-  }
-  const adminAccount = await createAdminAccount(userId, newCommunity.id);
-  if (adminAccount) {
-    return "community created with admin account";
-  }
 };
 
 // Add user to community
-export const addPersonToCommunity = async (email, communityId) => {
+exports.addPersonToCommunity = async (email, communityId) => {
   const existingUser = await findUserByEmail(email);
   if (!existingUser) {
     return "User must register first";
@@ -40,7 +44,7 @@ export const addPersonToCommunity = async (email, communityId) => {
 };
 
 // remove person from community
-export const removePerson = async (userEmail, communityId) => {
+exports.removePerson = async (userEmail, communityId) => {
   const existingUser = await findUserByEmail(userEmail);
   if (!existingUser) {
     return "There is no user with such email";
@@ -67,7 +71,7 @@ export const removePerson = async (userEmail, communityId) => {
 };
 
 // find community by Id
-export const findCommunitById = async (communiyId) => {
+exports.findCommunitById = async (communiyId) => {
   const community = await prisma.community.findUnique({
     where: {
       id: communiyId,
@@ -80,7 +84,7 @@ export const findCommunitById = async (communiyId) => {
 };
 
 // find community by creatorId
-export const findCommunitByCreatorId = async (creatorId) => {
+exports.findCommunitByCreatorId = async (creatorId) => {
   const communities = await prisma.community.findMany({
     where: {
       creatorId: creatorId,

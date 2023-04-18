@@ -1,17 +1,29 @@
 const { PrismaClient } = require("@prisma/client");
+
+//services
+const { createCommunity } = require("../services/community.service");
+
 const prisma = new PrismaClient();
 
 // Create a new community
 module.exports.createCommunityController = async (req, res) => {
+  const data = {
+    name: req.body.name,
+    type: req.body.type,
+    creatorId: req.user.id,
+    vision: req.body.vision,
+  };
+
   try {
-    await prisma.community.create({
-      communityName: req.body.communityName,
-      communityVision: req.body.communityVision,
-      communityTerms: req.body.termsAndConditions,
-    });
+    await createCommunity(data)
+      .then((community) => {})
+      .catch((error) => {
+        throw new Error(error.message);
+      });
   } catch (error) {
-    console.log(error);
-    res.status(500).json(error);
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
