@@ -6,11 +6,12 @@ const {
   createStory,
   getStoryById,
 } = require("../controllers/memory.controller");
+const { protect } = require("../middlewares/protect.middleware");
 
 const router = express.Router();
 
-router.get("/", getStories);
-router.post("/new", createStory);
-router.get("/story/:id", getStoryById);
+router.get("/:id", protect, getStories);
+router.post("/new", protect, createStory);
+router.get("/story/:id", protect, getStoryById);
 
 module.exports = router;

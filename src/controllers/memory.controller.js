@@ -4,13 +4,13 @@ const prisma = new PrismaClient();
 
 exports.getStories = async (req, res) => {
   const data = {
-    communityId: req.body.community,
+    communityId: req.params.id,
   };
 
   await prisma.memory
     .findMany({
       where: {
-        communityId: data.communityId,
+        communityId: parseInt(data.communityId),
       },
       include: {
         media: true,
