@@ -17,6 +17,7 @@ model Media {
     updatedAt        DateTime     @updatedAt
     MilestoneId      Int?
     achievementId    Int?
+    Memory           Memory[]
     Account          Account[]
     Community        Community[]
     Account_banners  Account[]    @relation(name: "banner")
@@ -99,7 +100,7 @@ model Account {
     groupsId          Int?
     achievementId     Int?
     Post              Post[]
-    Memory            Memory[]
+    Memory            Memory?
     comments          Comment[]
     reactions         Reaction[]
     MemoryViewers     MemoryViewers[]
@@ -222,11 +223,14 @@ model Skill {
 model Memory {
     id            Int             @id @default(autoincrement())
     memory_Type   Int
-    accountId     Int
+    accountId     Int             @unique
     communityId   Int
+    mediaId       Int             @unique
     content       String
+    viewers       Int[]
     createdAt     DateTime        @default(now())
     MemoryViewers MemoryViewers[]
+    media         Media           @relation(fields: [mediaId], references: [id])
     account       Account         @relation(fields: [accountId], references: [id])
     Memory_Type   Memory_Type     @relation(fields: [memory_Type], references: [id])
     community     Community       @relation(fields: [communityId], references: [id])

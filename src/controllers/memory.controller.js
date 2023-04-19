@@ -7,11 +7,26 @@ exports.getStories = async (req, res) => {
     communityId: req.body.community,
   };
 
-  const memories = await prisma.memory.findMany({
-    where: {
-      communityId: data.communityId,
-    },
-  });
+  await prisma.memory
+    .findMany({
+      where: {
+        communityId: data.communityId,
+      },
+      include: {
+        media: true,
+      },
+    })
+    .then((stories) => {
+      return res.status(200).json({
+        message: "all stories",
+        data: stories,
+      });
+    })
+    .catch((err) => {
+      return res.status(400).json({
+        message: err.message,
+      });
+    });
 };
 
 exports.createStory = async (req, res) => {};

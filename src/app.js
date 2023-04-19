@@ -39,7 +39,7 @@ app.use(
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/post", postRoutes);
-app.use("/api/v1/story", memoryRoutes);
+app.use("/api/v1/memory", memoryRoutes);
 app.use("/api/v1/account", accountRoutes);
 app.use("/api/v1/community", communityRoutes);
 

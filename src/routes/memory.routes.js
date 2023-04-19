@@ -9,7 +9,7 @@ const {
 
 const router = express.Router();
 
-router.get("/all", getStories);
+router.get("/", getStories);
 router.post("/new", createStory);
 router.get("/story/:id", getStoryById);
 
