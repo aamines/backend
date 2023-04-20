@@ -7,19 +7,26 @@ exports.getStories = async (req, res) => {
     communityId: req.params.id,
   };
 
-  await prisma.memory
+  await prisma.account
     .findMany({
       where: {
         communityId: parseInt(data.communityId),
+        Memory: {
+          some: {
+            communityId: parseInt(data.communityId),
+          },
+        },
       },
       include: {
-        media: true,
+        user: true,
+        Media: true,
+        Memory: true,
       },
     })
-    .then((stories) => {
+    .then((accounts) => {
       return res.status(200).json({
-        message: "all stories",
-        data: stories,
+        message: "all accounts with stories",
+        data: accounts,
       });
     })
     .catch((err) => {
