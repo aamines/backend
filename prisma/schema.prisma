@@ -100,7 +100,7 @@ model Account {
     groupsId          Int?
     achievementId     Int?
     Post              Post[]
-    Memory            Memory?
+    Memory            Memory[]
     comments          Comment[]
     reactions         Reaction[]
     MemoryViewers     MemoryViewers[]
@@ -207,12 +207,6 @@ model Achievement {
 
 //memories system
 
-model Memory_Type {
-    id       Int      @id @default(autoincrement())
-    type     String
-    memories Memory[]
-}
-
 model Skill {
     id       Int                @id @default(autoincrement())
     name     String
@@ -222,17 +216,17 @@ model Skill {
 
 model Memory {
     id            Int             @id @default(autoincrement())
-    memory_Type   Int
-    accountId     Int             @unique
+    accountId     Int
     communityId   Int
-    mediaId       Int             @unique
+    mediaId       Int?
+    type          String
     content       String
+    color         String
     viewers       Int[]
     createdAt     DateTime        @default(now())
     MemoryViewers MemoryViewers[]
-    media         Media           @relation(fields: [mediaId], references: [id])
+    media         Media?          @relation(fields: [mediaId], references: [id])
     account       Account         @relation(fields: [accountId], references: [id])
-    Memory_Type   Memory_Type     @relation(fields: [memory_Type], references: [id])
     community     Community       @relation(fields: [communityId], references: [id])
 }
 

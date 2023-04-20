@@ -11,7 +11,7 @@ const { protect } = require("../middlewares/protect.middleware");
 const router = express.Router();
 
 router.get("/:id", protect, getStories);
-router.post("/new", protect, createStory);
+router.post("/create", protect, createStory);
 router.get("/story/:id", protect, getStoryById);
 
 module.exports = router;
