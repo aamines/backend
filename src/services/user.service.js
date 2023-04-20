@@ -84,6 +84,9 @@ module.exports.getUserById = async (id) => {
     where: {
       id,
     },
+    include: {
+      community: true,
+    },
   });
 
   return lodash.pick(user, [
