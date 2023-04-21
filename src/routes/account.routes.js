@@ -14,10 +14,10 @@ const router = express.Router();
 
 //implementing account routes
 
-router.get("/:id", getAccount);
-router.get("/members", listMembers);
-router.post("/join", addPersonController);
+router.delete("/leave/:id", leaveController);
 router.get("/communities", listCommunities);
-router.delete("/leave/{:id}", leaveController);
+router.post("/join", addPersonController);
+router.get("/members", listMembers);
+router.get("/:id", getAccount);
 
 module.exports = router;

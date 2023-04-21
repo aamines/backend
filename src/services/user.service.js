@@ -85,18 +85,16 @@ module.exports.getUserById = async (id) => {
       id,
     },
     include: {
-      community: true,
+      accounts: {
+        include: {
+          media_banner: true,
+          media_profile: true,
+        },
+      },
     },
   });
 
-  return lodash.pick(user, [
-    "id",
-    "names",
-    "email",
-    "country",
-    "createdAt",
-    "updatedAt",
-  ]);
+  return user;
 };
 
 // check if user has an account

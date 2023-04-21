@@ -21,6 +21,8 @@ exports.getStories = async (req, res) => {
         user: true,
         Media: true,
         Memory: true,
+        media_banner: true,
+        media_profile: true,
       },
     })
     .then((accounts) => {

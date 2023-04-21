@@ -36,6 +36,8 @@ exports.getAccount = async (req, res) => {
       },
       include: {
         user: true,
+        media_profile: true,
+        media_banner: true,
       },
     })
     .then((account) => {

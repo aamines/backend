@@ -4,6 +4,7 @@ const express = require("express");
 const {
   updateUser,
   getUserDetails,
+  getMemberCommunities,
 } = require("../controllers/user.controller");
 
 //middlewares
@@ -13,7 +14,8 @@ const { updateUserValidation } = require("../middlewares/auth.middleware");
 const router = express.Router();
 
 //routes
-router.get("/:id", protect, getUserDetails);
 router.put("/update", protect, updateUserValidation, updateUser);
+router.get("/communities", protect, getMemberCommunities);
+router.get("/:id", protect, getUserDetails);
 
 module.exports = router;

@@ -7,7 +7,7 @@ const { createAdminAccount } = require("../services/account.service");
 const prisma = new PrismaClient();
 
 // Create a new community
-module.exports.createCommunityController = async (req, res) => {
+exports.createCommunityController = async (req, res) => {
   const data = {
     name: req.body.name,
     type: req.body.type,
@@ -40,7 +40,7 @@ module.exports.createCommunityController = async (req, res) => {
   }
 };
 
-module.exports.getCommunityById = async (req, res) => {
+exports.getCommunityById = async (req, res) => {
   try {
     const community = await prisma.community.find({
       where: { communityId: req.body.communityId },
