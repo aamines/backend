@@ -40,7 +40,6 @@ model Media_type {
 model Status {
     id          Int         @id @default(autoincrement())
     status      String
-    User        User[]
     accounts    Account[]
     communities Community[]
 }
@@ -53,17 +52,15 @@ model Role {
 
 model User {
     id                     Int       @id @default(autoincrement())
-    names                  String
     email                  String    @unique
     password               String
+    gender                 String
     country                String
     emailVerificationToken String?   @unique
-    statusId               Int       @default(1)
     emailVerified          Boolean   @default(false)
     updatedAt              DateTime  @updatedAt
     createdAt              DateTime  @default(now())
     accounts               Account[]
-    status                 Status    @relation(fields: [statusId], references: [id])
 }
 
 model Community {
@@ -88,6 +85,7 @@ model Account {
     id                Int                @id @default(autoincrement())
     userId            Int
     communityId       Int
+    names             String
     statusId          Int                @default(1)
     roleId            Int                @default(3)
     profile           Int?

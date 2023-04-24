@@ -48,12 +48,11 @@ module.exports.createUser = async (data) => {
 
     const newUser = await prisma.user.create({
       data: {
-        names: data.names,
         email: data.email,
-        password: hashedPassword,
+        gender: data.gender,
         country: data.country,
+        password: hashedPassword,
         emailVerificationToken: code,
-        statusId: 1,
       },
     });
 

@@ -13,8 +13,8 @@ const { hasAccount } = require("../services/user.service");
 // Create a new user
 module.exports.registerController = async (req, res) => {
   const data = {
-    names: req.body.names,
     email: req.body.email,
+    gender: req.body.gender,
     country: req.body.country,
     password: req.body.password,
   };
@@ -26,7 +26,7 @@ module.exports.registerController = async (req, res) => {
           .then((token) => {
             return res.status(200).json({
               message: "Account created successfully",
-              token: token,
+              data: token,
             });
           })
           .catch((error) => {

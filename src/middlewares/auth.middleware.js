@@ -3,10 +3,10 @@ const Joi = require("joi");
 //validating register user
 module.exports.registerValidation = (req, res, next) => {
   const schema = Joi.object({
-    names: Joi.string().min(5).max(50).required(),
-    email: Joi.string().min(10).max(60).email().required(),
+    gender: Joi.string().min(4).max(6).required(),
     country: Joi.string().min(2).max(40).required(),
     password: Joi.string().min(8).max(15).required(),
+    email: Joi.string().min(10).max(60).email().required(),
   });
   const { error } = schema.validate(req.body);
   if (error) {
