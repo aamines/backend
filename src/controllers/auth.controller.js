@@ -47,6 +47,7 @@ module.exports.registerController = async (req, res) => {
 module.exports.verifyToken = async (req, res) => {
   try {
     const { token } = req.body;
+
     await verifyToken(token)
       .then((message) => {
         return res.status(200).json({
@@ -67,6 +68,7 @@ module.exports.verifyToken = async (req, res) => {
 module.exports.verifyEmailController = async (req, res) => {
   try {
     const { email, code } = req.body;
+
     await verifyEmail(email, code)
       .then((message) => {
         return res.status(200).json({

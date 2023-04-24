@@ -93,7 +93,6 @@ module.exports.verifyToken = async (token) => {
   return new Promise((resolve, reject) => {
     jwt.verify(token, process.env.JWT_ACCESS_SECRET, (err, decoded) => {
       if (err) {
-        console.log(err);
         reject(err);
       } else {
         resolve(decoded);
@@ -132,6 +131,8 @@ module.exports.verifyEmail = async (email, code) => {
         .catch((error) => {
           throw new Error(error.message);
         });
+    } else if (user?.emailVerified) {
+      throw new Error("Email already verified");
     } else {
       throw new Error("Invalid code");
     }
