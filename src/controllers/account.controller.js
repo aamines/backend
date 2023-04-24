@@ -36,6 +36,11 @@ exports.getAccount = async (req, res) => {
       },
       include: {
         user: true,
+        community: {
+          include: {
+            accounts: true,
+          },
+        },
         media_profile: true,
         media_banner: true,
       },
