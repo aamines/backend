@@ -3,6 +3,7 @@ const Joi = require("joi");
 //validating register user
 module.exports.registerValidation = (req, res, next) => {
   const schema = Joi.object({
+    names: Joi.string().min(5).max(40).required(),
     gender: Joi.string().min(4).max(6).required(),
     country: Joi.string().min(2).max(40).required(),
     password: Joi.string().min(8).max(15).required(),
@@ -97,8 +98,8 @@ module.exports.updateUserValidation = (req, res, next) => {
 //validating verify email
 module.exports.verifyEmailValidation = async (req, res, next) => {
   const schema = Joi.object({
-    code: Joi.string().required().min(40).max(40),
     email: Joi.string().min(6).max(60).email().required(),
+    code: Joi.string().required().min(40).max(40),
   });
   const { error } = schema.validate(req.body);
   if (error) {

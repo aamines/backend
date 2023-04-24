@@ -54,6 +54,7 @@ model User {
     id                     Int       @id @default(autoincrement())
     email                  String    @unique
     password               String
+    names                  String    @default("")
     gender                 String
     country                String
     emailVerificationToken String?   @unique
@@ -87,7 +88,7 @@ model Account {
     communityId       Int
     names             String
     statusId          Int                @default(1)
-    roleId            Int                @default(3)
+    roleId            Int
     profile           Int?
     banner            Int?
     createdAt         DateTime           @default(now())

@@ -26,9 +26,9 @@ exports.createCommunityController = async (req, res) => {
               data: account,
             });
           })
-          .catch(() => {
+          .catch((error) => {
             return res.status(500).json({
-              message: "Something went wrong",
+              message: error,
             });
           });
       })

@@ -33,6 +33,7 @@ exports.createAdminAccount = (details) => {
           roleId: 1,
           statusId: 1,
           userId: details.user.id,
+          names: details.user.names,
           communityId: details.community.id,
         },
       })
