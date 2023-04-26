@@ -43,9 +43,22 @@ exports.createCommunityController = async (req, res) => {
 };
 
 exports.getCommunityById = async (req, res) => {
+  const data = {
+    id: req.params.commmunity,
+  };
+
   try {
-    const community = await prisma.community.find({
-      where: { communityId: req.body.communityId },
+    const community = await prisma.community.findFirst({
+      where: { communityId: data.id },
+      include: {
+        accounts: {
+          include: {
+            media_profile: true,
+            role: true,
+          },
+        },
+        groups: true,
+      },
     });
     if (community) {
       res.status(200).json(community);

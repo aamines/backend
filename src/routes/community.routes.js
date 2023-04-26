@@ -5,6 +5,7 @@ const router = express.Router();
 //controllers
 const {
   createCommunityController,
+  getCommunityById,
 } = require("../controllers/community.controller");
 
 //middlwares
@@ -19,5 +20,7 @@ router.post(
   newCommunityValidation,
   createCommunityController
 );
+
+router.get("/:community", protect, getCommunityById);
 
 module.exports = router;
