@@ -42,11 +42,15 @@ exports.createCommunityController = async (req, res) => {
   }
 };
 
-exports.invite = async (req, res) => {
+exports.inviteMembers = async (req, res) => {
   const data = {
-    admin: req.body.admin,
-    community: req.body.community,
+    account: req.body.account,
+    members: req.body.members,
+    communityId: req.params.community,
   };
+
+  try {
+  } catch (error) {}
 };
 
 exports.getCommunityById = async (req, res) => {
