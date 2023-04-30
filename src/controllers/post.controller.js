@@ -1,27 +1,36 @@
 const { PrismaClient } = require("@prisma/client");
+
 const prisma = new PrismaClient();
 
 module.exports.createPost = async (req, res) => {
   return new Promise(async (resolve, reject) => {
-    await prisma.post.create({
-      typeId: req.body.typeId,
-      postedBy: req.body.accountId,
-      projectId: req.params.projectId,
-      achievementId: req.body.achievementId,
-    }).then((result)=>{
-      resolve(result)
-    }).catch((error)=>{
-      reject(error.message)
-    })
-  })
+    await prisma.post
+      .create({
+        typeId: req.body.typeId,
+        postedBy: req.body.accountId,
+        projectId: req.params.projectId,
+        achievementId: req.body.achievementId,
+      })
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((error) => {
+        reject(error.message);
+      });
+  });
 };
 
 module.exports.loadPosts = async (req, res) => {
   return new Promise(async (resolve, reject) => {
-    await prisma.post.findAll()
-    .then((posts)=>{resolve(posts)})
-    .catch((error)=>{reject(error.message)})
-  })
+    await prisma.post
+      .findAll()
+      .then((posts) => {
+        resolve(posts);
+      })
+      .catch((error) => {
+        reject(error.message);
+      });
+  });
 };
 
 module.exports.addReactionToPost = async (req, res) => {

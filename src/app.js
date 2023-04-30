@@ -6,12 +6,13 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerDocs = require("./swagger/swagger.json");
 
 //routes
-const authRoutes = require("./routes/auth.routes.js");
-const userRoutes = require("./routes/user.routes.js");
-const postRoutes = require("./routes/posts.routes.js");
-const memoryRoutes = require("../src/routes/memory.routes.js");
-const accountRoutes = require("./routes/account.routes.js");
-const communityRoutes = require("./routes/community.routes.js");
+const authRoutes = require("./routes/auth.routes");
+const userRoutes = require("./routes/user.routes");
+const postRoutes = require("./routes/post.routes");
+const accountRoutes = require("./routes/account.routes");
+const memoryRoutes = require("../src/routes/memory.routes");
+const communityRoutes = require("./routes/community.routes");
+const notificationRoutes = require("./routes/notification.routes");
 
 //setting up server
 const app = express();
@@ -42,6 +43,7 @@ app.use("/api/v1/post", postRoutes);
 app.use("/api/v1/memory", memoryRoutes);
 app.use("/api/v1/account", accountRoutes);
 app.use("/api/v1/community", communityRoutes);
+app.use("/api/v1/notifications", notificationRoutes);
 
 //default page
 app.get("/", (req, res) => {

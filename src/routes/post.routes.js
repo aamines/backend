@@ -10,7 +10,7 @@ const {
   addReactionToPost,
   loadPostReactions,
   addReactionToComment,
-} = require("../controllers/posts.controller");
+} = require("../controllers/post.controller");
 
 const router = express.Router();
 
