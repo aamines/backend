@@ -42,6 +42,13 @@ exports.createCommunityController = async (req, res) => {
   }
 };
 
+exports.invite = async (req, res) => {
+  const data = {
+    admin: req.body.admin,
+    community: req.body.community,
+  };
+};
+
 exports.getCommunityById = async (req, res) => {
   const data = {
     id: req.params.commmunity,

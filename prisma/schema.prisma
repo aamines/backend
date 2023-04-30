@@ -51,17 +51,18 @@ model Role {
 }
 
 model User {
-    id                     Int       @id @default(autoincrement())
-    email                  String    @unique
+    id                     Int             @id @default(autoincrement())
+    email                  String          @unique
     password               String
-    names                  String    @default("")
+    names                  String          @default("")
     gender                 String
     country                String
-    emailVerificationToken String?   @unique
-    emailVerified          Boolean   @default(false)
-    updatedAt              DateTime  @updatedAt
-    createdAt              DateTime  @default(now())
+    emailVerificationToken String?         @unique
+    emailVerified          Boolean         @default(false)
+    updatedAt              DateTime        @updatedAt
+    createdAt              DateTime        @default(now())
     accounts               Account[]
+    Notifications          Notifications[]
 }
 
 model Community {
@@ -80,6 +81,7 @@ model Community {
     achievement Achievement[]
     media       Media?        @relation(references: [id], fields: [profile])
     status      Status        @relation(references: [id], fields: [statusId])
+    Invitation  Invitation[]
 }
 
 model Account {
@@ -115,6 +117,23 @@ model Account {
     media_profile     Media?             @relation(references: [id], fields: [profile], name: "profile")
     milestone_owners  Milestone?         @relation(fields: [milestone_owner], references: [id], name: "owners")
     milestone_upvotes Milestone?         @relation(fields: [milestone_upvote], references: [id], name: "upvotes")
+    Notifications     Notifications[]
+}
+
+model Skill {
+    id       Int                @id @default(autoincrement())
+    name     String
+    icon     String
+    accounts SkillsOnAccounts[]
+}
+
+model SkillsOnAccounts {
+    accountId Int
+    skillId   Int
+    skill     Skill   @relation(fields: [skillId], references: [id])
+    account   Account @relation(fields: [accountId], references: [id])
+
+    @@id([accountId, skillId])
 }
 
 model Group {
@@ -206,13 +225,6 @@ model Achievement {
 
 //memories system
 
-model Skill {
-    id       Int                @id @default(autoincrement())
-    name     String
-    icon     String
-    accounts SkillsOnAccounts[]
-}
-
 model Memory {
     id            Int             @id @default(autoincrement())
     accountId     Int
@@ -229,15 +241,6 @@ model Memory {
     community     Community       @relation(fields: [communityId], references: [id])
 }
 
-model SkillsOnAccounts {
-    accountId Int
-    skillId   Int
-    skill     Skill   @relation(fields: [skillId], references: [id])
-    account   Account @relation(fields: [accountId], references: [id])
-
-    @@id([accountId, skillId])
-}
-
 model MemoryViewers {
     accountId Int
     memoryId  Int
@@ -245,4 +248,62 @@ model MemoryViewers {
     account   Account @relation(fields: [accountId], references: [id])
 
     @@id([accountId, memoryId])
+}
+
+//notifications system
+
+model Notification_type {
+    id            Int             @id @default(autoincrement())
+    type          String
+    Notifications Notifications[]
+}
+
+model Notification_category {
+    id            Int             @id @default(autoincrement())
+    category      String
+    Notifications Notifications[]
+}
+
+model Notification_status {
+    id            Int             @id @default(autoincrement())
+    status        String
+    Notifications Notifications[]
+}
+
+model Notifications {
+    id         Int                   @id @default(autoincrement())
+    content    String
+    typeId     Int
+    categoryId Int
+    trace      Int
+    statusId   Int
+    accountId  Int
+    userId     Int
+    updatedAt  DateTime              @updatedAt
+    createdAt  DateTime              @default(now())
+    type       Notification_type     @relation(references: [id], fields: [typeId])
+    user       User                  @relation(references: [id], fields: [userId])
+    status     Notification_status   @relation(references: [id], fields: [statusId])
+    account    Account               @relation(references: [id], fields: [accountId])
+    category   Notification_category @relation(references: [id], fields: [categoryId])
+}
+
+//invitation system
+
+model Invitation_status {
+    id          Int          @id @default(autoincrement())
+    status      String
+    Invitations Invitation[]
+}
+
+model Invitation {
+    id          Int                @id @default(autoincrement())
+    invitee     Int
+    inviter     Int
+    communityId Int
+    statusId    Int?
+    updatedAt   DateTime           @updatedAt
+    createdAt   DateTime           @default(now())
+    status      Invitation_status? @relation(fields: [statusId], references: [id])
+    community   Community          @relation(fields: [communityId], references: [id])
 }
