@@ -1,14 +1,11 @@
-const formData = require("form-data");
-const Mailgun = require("mailgun.js");
+const dotenv = require("dotenv");
+const sgMail = require("@sendgrid/mail");
 const { PrismaClient } = require("@prisma/client");
 
-const mailgun = new Mailgun(formData);
+dotenv.config();
 
 const prisma = new PrismaClient();
-const mg = mailgun.client({
-  username: "api",
-  key: process.env.MAILGUN_KEY,
-});
+sgMail.setApiKey(process.env.SENDGRID_KEY);
 
 const sendEmail = async (options) => {
   const email = await prisma.email.create({
@@ -17,6 +14,31 @@ const sendEmail = async (options) => {
       typeId: options.type,
       statusId: 1,
     },
+  });
+
+  var mailOptions = {
+    to: `${options.to}`,
+    from: "byiringirosaad@gmail.com",
+    subject: options.subject,
+    html: options.text,
+  };
+  return new Promise((resolve, reject) => {
+    sgMail
+      .send(mailOptions)
+      .then(() => {
+        resolve(true);
+      })
+      .catch(async (error) => {
+        await prisma.email.update({
+          where: {
+            id: email.id,
+          },
+          data: {
+            statusId: 2,
+          },
+        });
+        reject(error);
+      });
   });
 };
 

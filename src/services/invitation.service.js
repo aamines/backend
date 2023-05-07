@@ -60,10 +60,14 @@ module.exports.sendInvitaions = async (members) => {
           text: html,
           subject: "Invited to a workspace",
           type: 1,
-        });
+        })
+          .then((message) => {
+            resolve("Invitations sent");
+          })
+          .catch((error) => {
+            reject(error);
+          });
       });
-
-      resolve("Invitations sent");
     } catch (error) {
       reject(error.message);
     }
