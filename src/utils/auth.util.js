@@ -17,9 +17,7 @@ module.exports.generateToken = async (user) => {
   const payload = {
     id: user.id,
   };
-  const token = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {
-    expiresIn: "1d",
-  });
+  const token = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {});
   return token;
 };
 
