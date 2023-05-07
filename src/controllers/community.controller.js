@@ -1,10 +1,10 @@
-const express = require("express");
-
+const crypto = require("crypto");
 const { PrismaClient } = require("@prisma/client");
 
 //services
 const { createCommunity } = require("../services/community.service");
 const { createAdminAccount } = require("../services/account.service");
+const { sendInvitaions } = require("../services/invitation.service");
 
 const prisma = new PrismaClient();
 
@@ -46,11 +46,43 @@ exports.inviteMembers = async (req, res) => {
   const data = {
     account: req.body.account,
     members: req.body.members,
-    communityId: req.params.community,
+    communityId: req.body.community,
   };
 
   try {
-  } catch (error) {}
+    const records = [
+      ...data.members.map((member) => {
+        return {
+          statusId: 1,
+          invitee: member.email,
+          roleId: parseInt(member.role),
+          inviter: parseInt(data.account),
+          communityId: parseInt(data.communityId),
+          code: crypto.randomBytes(20).toString("hex"),
+        };
+      }),
+    ];
+
+    const results = await Promise.all(
+      records.map((data) => {
+        return prisma.invitation.create({ data });
+      })
+    );
+
+    sendInvitaions(results)
+      .then((message) => {
+        return res.status(200).json({
+          message: message,
+        });
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
 };
 
 exports.getCommunityById = async (req, res) => {

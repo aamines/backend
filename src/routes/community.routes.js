@@ -4,7 +4,7 @@ const router = express.Router();
 
 //controllers
 const {
-  invite,
+  inviteMembers,
   getCommunityById,
   createCommunityController,
 } = require("../controllers/community.controller");
@@ -22,7 +22,7 @@ router.post(
   newCommunityValidation,
   createCommunityController
 );
-router.post("/invite", protect, invite);
+router.post("/invite", protect, inviteMembers);
 router.get("/:community", protect, getCommunityById);
 
 module.exports = router;

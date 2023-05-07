@@ -45,9 +45,10 @@ model Status {
 }
 
 model Role {
-    id       Int       @id @default(autoincrement())
-    role     String
-    accounts Account[]
+    id         Int          @id @default(autoincrement())
+    role       String
+    accounts   Account[]
+    Invitation Invitation[]
 }
 
 model User {
@@ -276,15 +277,16 @@ model Notifications {
     typeId     Int
     categoryId Int
     trace      Int
+    code       String
     statusId   Int
-    accountId  Int
-    userId     Int
+    accountId  Int?
+    userId     Int?
     updatedAt  DateTime              @updatedAt
     createdAt  DateTime              @default(now())
     type       Notification_type     @relation(references: [id], fields: [typeId])
-    user       User                  @relation(references: [id], fields: [userId])
+    user       User?                 @relation(references: [id], fields: [userId])
     status     Notification_status   @relation(references: [id], fields: [statusId])
-    account    Account               @relation(references: [id], fields: [accountId])
+    account    Account?              @relation(references: [id], fields: [accountId])
     category   Notification_category @relation(references: [id], fields: [categoryId])
 }
 
@@ -297,13 +299,39 @@ model Invitation_status {
 }
 
 model Invitation {
-    id          Int                @id @default(autoincrement())
-    invitee     Int
+    id          Int               @id @default(autoincrement())
+    roleId      Int
     inviter     Int
     communityId Int
-    statusId    Int?
-    updatedAt   DateTime           @updatedAt
-    createdAt   DateTime           @default(now())
-    status      Invitation_status? @relation(fields: [statusId], references: [id])
-    community   Community          @relation(fields: [communityId], references: [id])
+    statusId    Int
+    code        String
+    invitee     String
+    updatedAt   DateTime          @updatedAt
+    createdAt   DateTime          @default(now())
+    role        Role              @relation(fields: [roleId], references: [id])
+    status      Invitation_status @relation(fields: [statusId], references: [id])
+    community   Community         @relation(fields: [communityId], references: [id])
+}
+
+// Email system
+
+model Email_status {
+    id     Int     @id @default(autoincrement())
+    status String
+    Email  Email[]
+}
+
+model Email_type {
+    id    Int     @id @default(autoincrement())
+    type  String
+    Email Email[]
+}
+
+model Email {
+    id       Int          @id @default(autoincrement())
+    typeId   Int
+    statusId Int
+    email    String
+    type     Email_type   @relation(fields: [typeId], references: [id])
+    status   Email_status @relation(fields: [statusId], references: [id])
 }
