@@ -20,7 +20,7 @@ const sendEmail = async (options) => {
     to: `${options.to}`,
     from: "byiringirosaad@gmail.com",
     subject: options.subject,
-    html: options.text,
+    html: `${options.text}`,
   };
   return new Promise((resolve, reject) => {
     sgMail

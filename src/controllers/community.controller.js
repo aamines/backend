@@ -69,7 +69,21 @@ exports.inviteMembers = async (req, res) => {
       })
     );
 
-    sendInvitaions(results)
+    const community = await prisma.community.findFirst({
+      where: { id: data?.communityId },
+    });
+
+    const params = {
+      results: results,
+      community: community?.name,
+      link: `${process.env.FRONTEND_URL}/invitation`,
+      user: {
+        name: req.user?.name,
+        email: req.user?.email,
+      },
+    };
+
+    sendInvitaions(params)
       .then((message) => {
         return res.status(200).json({
           message: message,

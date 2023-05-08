@@ -3,19 +3,135 @@ html(lang="en")
     head
         meta(charset="UTF-8")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        link(rel="preconnect" href="https://fonts.googleapis.com")
+        link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
+        link(href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Invitation Link
+        style(type="text/css").
+            *{
+                padding: 0;
+                margin: 0;
+                box-sizing: border-box;
+                font-family: 'Poppins', sans-serif;
+                color: #1D2836;
+            }    
+
+            .main{
+                width: aut;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .logo{
+                width: 100%;
+                padding: 20px;
+                margin: 20px 0;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .logo h1{
+                font-weight: 600;
+                margin: 20px 0 0 0;
+            }
+
+            .content{
+                width: auto;
+                height: auto;
+                padding: 60px;
+                background: #F0FAF5;
+                border-radius: 10px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                margin: 0 0 40px 0;
+            }
+
+            .content p{
+                font-size: 1rem;
+                font-weight: 400;
+                margin: 20px 0;
+                text-align: center;
+            }
+
+            .content .p{
+                margin: 0 0 40px 0;
+            }
+
+            .content .p p{
+                font-size: 1rem;
+                font-weight: 400;
+                margin: 5px 0;
+                text-align: center;
+            }
+
+            .content span{
+                color: #3BE28F;
+            }
+
+            .content a{
+                width: 300px;
+                height: 60px;
+                margin: 0 0 30px 0 ; 
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px dashed #3BE28F;
+                text-decoration: none;
+                color: #3BE28F;
+                border-radius: 50px;
+            }
+
+            .footer{
+                width: 100%;
+                height: auto;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .footer .icons{
+                width: 100%;
+                height: auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .footer p{
+                font-size: 1em;
+                font-weight: 400;
+                margin: 5px 0;
+                text-align: center;
+            }
+
     body
-        div 
-            div 
+        .main  
+            .logo 
                 img(src="/logo.png", alt="logo")
-                h3 Invitation Link
-            div
-                a(href=`${link}` target="_blank") Click here
-                p You are ready to setup your new projectia account.
-                p Click on the above button to verify your account.
-            div
-                div 
+                h1 You've been invited
+            .content 
+                .p 
+                    p #{user.name} (#{user.email}) has invited you to join an 
+                    p
+                        | organization called 
+                        span #{community}
+                a(href=`${link}` target="_blank") Accept invitation
+                p 
+                    | If you have any complications, You can contact us 
+                    span support@projectia.co
+            .footer 
+                .icons 
                     a(href="https://twitter.com/_projectia_" target="_blank") 
                         img(src="/logos/twitter.png", alt="twitter")
                     a(href="https://www.linkedin.com/company/projectia" target="_blank") 

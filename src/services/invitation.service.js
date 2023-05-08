@@ -7,10 +7,10 @@ const sendEmail = require("../utils/email.util");
 
 const prisma = new PrismaClient();
 
-module.exports.sendInvitaions = async (members) => {
+module.exports.sendInvitaions = async (data) => {
   return new Promise((resolve, reject) => {
     try {
-      members.map(async (member) => {
+      data.results.map(async (member) => {
         // send email using pug views
         const templatePath = path.join(
           __dirname,
@@ -31,6 +31,8 @@ module.exports.sendInvitaions = async (members) => {
 
         const html = pug.renderFile(`${templatePath}`, {
           link: invitation,
+          user: data.user,
+          community: data.community,
         });
 
         // check if user exists
