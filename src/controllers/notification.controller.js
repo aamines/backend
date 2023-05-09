@@ -13,6 +13,11 @@ exports.getAccountNotifications = async (req, res) => {
         where: {
           accountId: parseInt(data.id),
         },
+        include: {
+          type: true,
+          status: true,
+          category: true,
+        },
       })
       .then((results) => {
         return res.status(200).json({
@@ -40,6 +45,11 @@ exports.getUserNotifications = async (req, res) => {
       .findMany({
         where: {
           userId: parseInt(data.id),
+        },
+        include: {
+          type: true,
+          status: true,
+          category: true,
         },
       })
       .then((results) => {
