@@ -1,3 +1,4 @@
+const _ = require("lodash");
 const crypto = require("crypto");
 const { PrismaClient } = require("@prisma/client");
 
@@ -5,6 +6,7 @@ const { PrismaClient } = require("@prisma/client");
 const { createCommunity } = require("../services/community.service");
 const { createAdminAccount } = require("../services/account.service");
 const { sendInvitaions } = require("../services/invitation.service");
+const { log } = require("console");
 
 const prisma = new PrismaClient();
 
@@ -51,11 +53,16 @@ exports.inviteMembers = async (req, res) => {
 
   try {
     const records = [
-      ...data.members.map((member) => {
+      ...data.members.map(async (member) => {
         return {
           statusId: 1,
           invitee: member.email,
-          roleId: parseInt(member.role),
+          roleId: _.pick(
+            await prisma.role.findFirst({
+              where: { role: member?.role },
+            }),
+            "id"
+          ).id,
           inviter: parseInt(data.account),
           communityId: parseInt(data.communityId),
           code: crypto.randomBytes(20).toString("hex"),
@@ -64,8 +71,8 @@ exports.inviteMembers = async (req, res) => {
     ];
 
     const results = await Promise.all(
-      records.map((data) => {
-        return prisma.invitation.create({ data });
+      records.map(async (data) => {
+        return await prisma.invitation.create({ data: await data });
       })
     );
 

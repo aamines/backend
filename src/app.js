@@ -45,17 +45,6 @@ app.use("/api/v1/account", accountRoutes);
 app.use("/api/v1/community", communityRoutes);
 app.use("/api/v1/notifications", notificationRoutes);
 
-app.get("/invitation", (req, res) => {
-  res.render("emails/invitation", {
-    user: {
-      name: "Byiringiro saad",
-      email: "byiringirosaad@gmail.com",
-    },
-    community: "Projectia",
-    link: "http://localhost:3000",
-  });
-});
-
 //default page
 app.get("/", (req, res) => {
   res.render("index");
