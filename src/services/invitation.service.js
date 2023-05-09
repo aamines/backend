@@ -1,9 +1,7 @@
-const pug = require("pug");
-const path = require("path");
 const { PrismaClient } = require("@prisma/client");
 
 //utils
-const sendEmail = require("../utils/email.util");
+const { sendInvitation } = require("../utils/email.util");
 
 const prisma = new PrismaClient();
 
@@ -11,29 +9,14 @@ module.exports.sendInvitaions = async (data) => {
   return new Promise((resolve, reject) => {
     try {
       data.results.map(async (member) => {
-        // send email using pug views
-        const templatePath = path.join(
-          __dirname,
-          "..",
-          "views",
-          "emails",
-          "invitation.pug"
-        );
-
         const params = {
-          email: member.invitee,
           token: member.code,
+          email: member.invitee,
         };
 
         const invitation = `${
           process.env.FRONTEND_URL
         }/invitation?${new URLSearchParams(params)}`;
-
-        const html = pug.renderFile(`${templatePath}`, {
-          link: invitation,
-          user: data.user,
-          community: data.community,
-        });
 
         // check if user exists
         const userExists = await prisma.user.findFirst({
@@ -57,11 +40,12 @@ module.exports.sendInvitaions = async (data) => {
         }
 
         // send email
-        sendEmail({
-          to: member.invitee,
-          text: html,
-          subject: "Invited to a workspace",
+        sendInvitation({
           type: 1,
+          user: data?.user,
+          to: member.invitee,
+          invitation: invitation,
+          community: data?.community,
         })
           .then((message) => {
             resolve("Invitations sent");

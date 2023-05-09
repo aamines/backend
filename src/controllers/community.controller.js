@@ -83,9 +83,8 @@ exports.inviteMembers = async (req, res) => {
     const params = {
       results: results,
       community: community?.name,
-      link: `${process.env.FRONTEND_URL}/invitation`,
       user: {
-        name: req.user?.name,
+        name: req.user?.names,
         email: req.user?.email,
       },
     };
