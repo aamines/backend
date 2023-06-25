@@ -14,7 +14,6 @@ module.exports.addPersonController = async (req, res) => {
         communityId: req.body.communityId,
         statusId: "inactive",
       })
-
       .then((success) => {
         resolve(success);
       })
