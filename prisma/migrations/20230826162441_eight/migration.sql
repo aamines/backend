@@ -1,0 +1,7 @@
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "banner" DROP DEFAULT,
+ALTER COLUMN "profile" DROP DEFAULT;
+
+-- AlterTable
+ALTER TABLE "Workspace" ADD COLUMN     "size" TEXT NOT NULL DEFAULT 'A',
+ALTER COLUMN "profile" DROP DEFAULT;

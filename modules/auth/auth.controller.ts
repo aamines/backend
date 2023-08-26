@@ -1,5 +1,4 @@
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
 import { Request, Router, Response } from "express";
 
@@ -61,14 +60,7 @@ class AuthController implements Controller {
         });
       }
 
-      // log user in
-      const token = jwt.sign(
-        {
-          id: user.id,
-          email: user.email,
-        },
-        `${process?.env?.JWT_SECRET}`
-      );
+      const token = this.service.signin(user?.id, user?.email);
 
       return res.status(200).json({
         message: "User logged in",
@@ -120,14 +112,7 @@ class AuthController implements Controller {
         },
       });
 
-      // log user in
-      const token = jwt.sign(
-        {
-          id: user.id,
-          email: user.email,
-        },
-        `${process?.env?.JWT_SECRET}`
-      );
+      const token = this.service.signin(user?.id, user?.email);
 
       return res.status(200).json({
         message: "User verified",

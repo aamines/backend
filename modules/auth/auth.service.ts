@@ -1,4 +1,5 @@
 import joi from "joi";
+import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
 
 // imports
@@ -15,15 +16,15 @@ class UserService {
     email: joi.string().email().required(),
   });
 
-  public validateUser(data: User) {
+  public validateUser = (data: User) => {
     return this.userSchema.validate(data);
-  }
+  };
 
-  public generateVerificationCode() {
+  public generateVerificationCode = () => {
     return Math.floor(100000 + Math.random() * 900000);
-  }
+  };
 
-  public async checkEmailExists(email: string) {
+  public checkEmailExists = async (email: string) => {
     // check if email exists
     const emailExists = await this.prisma.user.findUnique({
       where: {
@@ -36,7 +37,28 @@ class UserService {
     } else {
       return false;
     }
-  }
+  };
+
+  public signin = async (id: string, email: string) => {
+    // log user in
+    const token = jwt.sign(
+      {
+        id: id,
+        email: email,
+      },
+      `${process?.env?.JWT_SECRET}`
+    );
+
+    // change status
+    await this.prisma.user.update({
+      where: { email: email },
+      data: {
+        status: "ACTIVE",
+      },
+    });
+
+    return token;
+  };
 }
 
 export default UserService;
