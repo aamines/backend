@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "banner" DROP NOT NULL,
+ALTER COLUMN "profile" DROP NOT NULL;
