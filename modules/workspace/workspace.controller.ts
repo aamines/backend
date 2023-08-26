@@ -28,6 +28,7 @@ class WorkspaceController implements Controller {
       type: req.body.type,
       size: req.body.size,
       vision: req.body.vision,
+      emails: req.body.emails,
     };
 
     try {
@@ -62,6 +63,15 @@ class WorkspaceController implements Controller {
           vision: data.vision,
         },
       });
+
+      // invite members
+      const result = await this.service.inviteMembers(data.emails);
+
+      if (!result) {
+        return res.status(500).json({
+          message: "Internal server error",
+        });
+      }
 
       return res.status(201).json({
         message: "Workspace created",
