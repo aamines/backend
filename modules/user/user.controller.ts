@@ -28,9 +28,8 @@ class UserController implements Controller {
         names: true,
         email: true,
         gender: true,
-        banner: true,
-        profile: true,
         country: true,
+        accounts: true,
       },
     });
 

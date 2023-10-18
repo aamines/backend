@@ -157,7 +157,7 @@ class AuthController implements Controller {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(data.password, salt);
 
-      const result = await this.prisma.user.create({
+      await this.prisma.user.create({
         data: {
           names: data.names,
           email: data.email,
